@@ -38,6 +38,9 @@ public class Game implements Serializable {
     @ManyToMany(mappedBy = "ownedGames")
     private Set<Player> players;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    private Set<Achievement> achievements;
+
     public Game(String name, String coverImage, String genre) {
         this.name = name;
         this.coverImage = coverImage;

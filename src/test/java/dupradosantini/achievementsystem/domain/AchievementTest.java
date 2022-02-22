@@ -9,19 +9,24 @@ class AchievementTest {
     public static final String TEST_NAME = "TestAchievement";
     public static final String TEST_DESCRIPTION="Test Description of the Achievement";
     public static final String TEST_PICTURE = "url";
-    public static final Integer TEST_GAME_ID = 5;
+    public static final Integer TEST_GAME_ID = 1;
 
     Achievement testAchievement;
+    //Achievement testAchievement2;
+    Game game1;
+    //Game game2;
 
     @BeforeEach
     void setUp() {
-        testAchievement = new Achievement(5,"TestAchievement","Test Description of the Achievement","url");
+        game1 = new Game();
+        game1.setId(1);
+        testAchievement = new Achievement(game1,"TestAchievement","Test Description of the Achievement","url");
         testAchievement.setId(2);
     }
 
     @Test
     void testEquals() {
-        Achievement compareObject = new Achievement(5,"TestAchievement","Test Description of the Achievement");
+        Achievement compareObject = new Achievement(game1,"TestAchievement","Test Description of the Achievement");
         compareObject.setId(2);
         assertTrue(testAchievement.equals(compareObject),"Achievements are not equal");
     }
@@ -36,7 +41,7 @@ class AchievementTest {
 
     @Test
     void getGameId() {
-        assertEquals(TEST_GAME_ID,testAchievement.getGameId(),"Achievement gameIDs does not match");
+        assertEquals(TEST_GAME_ID,testAchievement.getOwnedByGameId(),"Achievement gameIDs does not match");
     }
 
     @Test

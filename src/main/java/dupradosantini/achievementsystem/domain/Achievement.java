@@ -6,10 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,6 +16,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
+@IdClass(AchievementId.class)
 public class Achievement implements Serializable {
 
     private static final long serialVersionUID = 1L; //serialization ID
@@ -28,7 +26,8 @@ public class Achievement implements Serializable {
     private Integer id;
 
     //Which game has this achievement...
-    private Integer gameId;
+    @Id
+    private Integer ownedByGameId;
 
     @NotEmpty(message = "Campo nome é obrigatório")
     @Length(min = 3, max = 30, message = "O nome deve entre 3 e 30 carateres")
@@ -41,17 +40,23 @@ public class Achievement implements Serializable {
     @Length(max=50, message = "O URL para a imagem da conquista deve ter no máximo 50 caracteres")
     private String picture;
 
-    public Achievement(Integer gameId, String name, String description, String picture) {
-        this.gameId = gameId;
+    @ManyToOne
+    private Game game;
+
+
+    public Achievement(Game game, String name, String description, String picture) {
         this.name = name;
         this.description = description;
         this.picture = picture;
+        this.game = game;
+        this.ownedByGameId = game.getId();
     }
     //Construtor para picture null
-    public Achievement(Integer gameId, String name, String description) {
-        this.gameId = gameId;
+    public Achievement(Game game, String name, String description) {
         this.name = name;
         this.description = description;
+        this.game = game;
+        this.ownedByGameId = game.getId();
     }
 
     @Override
@@ -59,11 +64,11 @@ public class Achievement implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Achievement)) return false;
         Achievement that = (Achievement) o;
-        return getId().equals(that.getId()) && getGameId().equals(that.getGameId());
+        return getId().equals(that.getId()) && this.getOwnedByGameId().equals(that.getOwnedByGameId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getGameId());
+        return Objects.hash(getId(), this.getOwnedByGameId());
     }
 }

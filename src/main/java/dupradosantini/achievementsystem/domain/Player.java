@@ -42,6 +42,8 @@ public class Player implements Serializable {
                 inverseJoinColumns = @JoinColumn(name="game_id"))
     private Set<Game> ownedGames;
 
+
+
     public Player(String name, String email, String profilePic) {
         this.name = name;
         this.email = email;
