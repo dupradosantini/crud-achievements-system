@@ -3,15 +3,15 @@ package dupradosantini.achievementsystem.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
-@ToString
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -43,6 +43,9 @@ public class Achievement implements Serializable {
     @ManyToOne
     private Game game;
 
+    @ManyToMany(mappedBy = "unlockedAchievements")
+    private Set<Player> players;
+
 
     public Achievement(Game game, String name, String description, String picture) {
         this.name = name;
@@ -70,5 +73,16 @@ public class Achievement implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), this.getOwnedByGameId());
+    }
+
+    @Override
+    public String toString() {
+        return "Achievement{" +
+                "id=" + id +
+                ", ownedByGameId=" + ownedByGameId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", picture='" + picture + '\'' +
+                '}';
     }
 }

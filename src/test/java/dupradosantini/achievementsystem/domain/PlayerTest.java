@@ -18,6 +18,8 @@ class PlayerTest {
     Player testPlayer;
     Game game1;
     Set<Game> testGame; //using generics
+    Achievement achievement1;
+    Set<Achievement> testAchievements;
 
     @BeforeEach
     void setUp() {
@@ -56,5 +58,20 @@ class PlayerTest {
 
         //then
         assertEquals(testGame,testPlayer.getOwnedGames(),"Owned Games do not match");
+    }
+    @Test
+    void getUnlockedAchievements(){
+        //given
+        game1 = new Game();
+        game1.setId(1);
+        achievement1 = new Achievement(game1,"mockAchiev","mockedAchiev","mockedurl");
+        achievement1.setId(1);
+        testAchievements = new HashSet<>(Arrays.asList(achievement1));
+
+        //when
+        testPlayer.setUnlockedAchievements(testAchievements);
+
+        //then
+        assertEquals(testAchievements,testPlayer.getUnlockedAchievements(),"UnlockedAchievements do not match");
     }
 }

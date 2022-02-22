@@ -3,6 +3,10 @@ package dupradosantini.achievementsystem.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AchievementTest {
@@ -14,7 +18,9 @@ class AchievementTest {
     Achievement testAchievement;
     //Achievement testAchievement2;
     Game game1;
-    //Game game2;
+    Player player1;
+    Player player2;
+    Set<Player> players;
 
     @BeforeEach
     void setUp() {
@@ -57,5 +63,27 @@ class AchievementTest {
     @Test
     void getPicture() {
         assertEquals(TEST_PICTURE,testAchievement.getPicture(),"Achievement pictures do not match");
+    }
+
+    @Test
+    void getGame(){
+        assertEquals(game1,testAchievement.getGame(),"Games do not match");
+    }
+
+    @Test
+    void getPlayers(){
+        //given
+        player1 = new Player();
+        player1.setId(1);
+
+        player2 = new Player();
+        player2.setId(2);
+
+        players = new HashSet<>(Arrays.asList(player1,player2));
+
+        //when
+        testAchievement.setPlayers(players);
+
+        assertEquals(players,testAchievement.getPlayers(),"Players that unlocked the achievement should match");
     }
 }

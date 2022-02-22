@@ -42,6 +42,15 @@ public class Player implements Serializable {
                 inverseJoinColumns = @JoinColumn(name="game_id"))
     private Set<Game> ownedGames;
 
+    @ManyToMany
+    @JoinTable(name ="unlocks",
+                joinColumns = @JoinColumn(name = "player_id"),
+                inverseJoinColumns = {  //performing a multiple column join because achievement has a composite key
+                        @JoinColumn(name="achievement_id"),
+                        @JoinColumn(name = "ownedbygame_id")
+                })
+    private Set<Achievement> unlockedAchievements;
+
 
 
     public Player(String name, String email, String profilePic) {
