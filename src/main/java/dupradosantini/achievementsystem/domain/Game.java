@@ -3,18 +3,14 @@ package dupradosantini.achievementsystem.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
-@ToString
 @Getter
 @Setter
 @NoArgsConstructor
@@ -38,6 +34,10 @@ public class Game implements Serializable {
     @Length(min = 2, max=15, message = "O genero deve ter entre 2 e 15 caracteres")
     private String genre;
 
+    //ManyToMany Relationship with Player
+    @ManyToMany(mappedBy = "ownedGames")
+    private Set<Player> players;
+
     public Game(String name, String coverImage, String genre) {
         this.name = name;
         this.coverImage = coverImage;
@@ -60,5 +60,15 @@ public class Game implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", coverImage='" + coverImage + '\'' +
+                ", genre='" + genre + '\'' +
+                '}';
     }
 }

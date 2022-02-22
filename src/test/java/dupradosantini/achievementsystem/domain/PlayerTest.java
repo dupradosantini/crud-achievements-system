@@ -4,6 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
@@ -12,6 +16,8 @@ class PlayerTest {
     public static final String TEST_PROFILE_PIC = "url";
 
     Player testPlayer;
+    Game game1;
+    Set<Game> testGame; //using generics
 
     @BeforeEach
     void setUp() {
@@ -37,5 +43,18 @@ class PlayerTest {
     @Test
     void getProfilePic(){
         assertEquals(TEST_PROFILE_PIC,testPlayer.getProfilePic(),"Player profilePics urls do not match");
+    }
+    @Test
+    void getOwnedGames(){
+        //given
+        game1 = new Game();
+        game1.setId(1);
+        testGame = new HashSet<>(Arrays.asList(game1));
+
+        //when
+        testPlayer.setOwnedGames(testGame);
+
+        //then
+        assertEquals(testGame,testPlayer.getOwnedGames(),"Owned Games do not match");
     }
 }

@@ -3,18 +3,15 @@ package dupradosantini.achievementsystem.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
-@ToString
+@Table(indexes = @Index(columnList = "email"))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -38,6 +35,13 @@ public class Player implements Serializable {
     @Length(max=50, message = "O URL para a foto de perfil deve ter no máximo 50 caracteres")
     private String profilePic;
 
+    //Relationship with Games
+    @ManyToMany
+    @JoinTable(name="ownership",
+                joinColumns = @JoinColumn(name = "player_id"),
+                inverseJoinColumns = @JoinColumn(name="game_id"))
+    private Set<Game> ownedGames;
+
     public Player(String name, String email, String profilePic) {
         this.name = name;
         this.email = email;
@@ -60,5 +64,15 @@ public class Player implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", profilePic='" + profilePic + '\'' +
+                '}';
     }
 }
