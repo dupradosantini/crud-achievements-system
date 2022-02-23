@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.domain;
 
+import dupradosantini.achievementsystem.exceptions.GameNotOwnedException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -82,5 +84,25 @@ public class Player implements Serializable {
                 ", email='" + email + '\'' +
                 ", profilePic='" + profilePic + '\'' +
                 '}';
+    }
+    //TODO testing
+    public void setUnlockedAchievements(Set<Achievement> unlockedAchievements){
+        Achievement actual;//definindo uma variavel pra lidar com o elemento atual mais pra frente.
+        if(this.unlockedAchievements != null){
+            Iterator<Achievement> achievementIterator = unlockedAchievements.iterator(); //criando iterador no set de achievements
+            while(achievementIterator.hasNext()){ //enquanto houver elementos no set
+                actual = achievementIterator.next(); //atribuindo o elemento atual na variavel
+                if(ownedGames.contains(actual.getGame())){ //se há o game nos owned-games.
+                    //adiciono ao set.
+                    unlockedAchievements.add(actual);
+                }else{
+                    //se não há retorna erro "jogador nao possui esse jogo"
+                    System.out.println("O Jogador não possui o Jogo requerido para desbloquear esse achievement");
+                    return;
+                }
+            }
+        }else{
+            this.unlockedAchievements = unlockedAchievements;
+        }
     }
 }
