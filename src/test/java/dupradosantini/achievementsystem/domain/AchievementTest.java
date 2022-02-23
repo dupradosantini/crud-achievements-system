@@ -47,7 +47,7 @@ class AchievementTest {
 
     @Test
     void getGameId() {
-        assertEquals(TEST_GAME_ID,testAchievement.getOwnedByGameId(),"Achievement gameIDs does not match");
+        assertEquals(TEST_GAME_ID,testAchievement.getGameId(),"Achievement gameIDs does not match");
     }
 
     @Test
