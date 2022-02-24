@@ -1,10 +1,9 @@
 package dupradosantini.achievementsystem.domain;
-
-import dupradosantini.achievementsystem.exceptions.GameNotOwnedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -72,7 +71,7 @@ class PlayerTest {
         //Criando o achievement e adicionando ao set
         achievement1 = new Achievement(game1,"mockAchiev","mockedAchiev","mockedurl");
         achievement1.setId(1);
-        Set<Achievement> testAchievement = new HashSet<>(Arrays.asList(achievement1));
+        Set<Achievement> testAchievements = new HashSet<>(Arrays.asList(achievement1));
 
         //when
         testPlayer.setUnlockedAchievements(testAchievements);
@@ -82,12 +81,9 @@ class PlayerTest {
     }
 
     @Test
-    //TODO terminar test criando exceção adequada.
     void setUnlockedAchievements(){
         game1 = new Game();
         game1.setId(1);
-        Game game2 = new Game();
-        game2.setId(2);
         testGame = new HashSet<>(Arrays.asList(game1));
         testPlayer.setOwnedGames(testGame);
 
