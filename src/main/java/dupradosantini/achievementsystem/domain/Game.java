@@ -1,5 +1,8 @@
 package dupradosantini.achievementsystem.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,9 +39,11 @@ public class Game implements Serializable {
 
     //ManyToMany Relationship with Player
     @ManyToMany(mappedBy = "ownedGames")
+    @JsonBackReference
     private Set<Player> players;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    @JsonManagedReference
     private Set<Achievement> achievements;
 
     public Game(String name, String coverImage, String genre) {

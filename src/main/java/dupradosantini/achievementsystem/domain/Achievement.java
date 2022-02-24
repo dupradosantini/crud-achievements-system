@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,9 +38,11 @@ public class Achievement implements Serializable {
     private String picture;
 
     @ManyToOne(optional = false)
+    @JsonBackReference
     private Game game;
 
     @ManyToMany(mappedBy = "unlockedAchievements")
+    @JsonBackReference
     private Set<Player> players;
 
 

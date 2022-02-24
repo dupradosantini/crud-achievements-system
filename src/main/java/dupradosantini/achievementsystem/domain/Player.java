@@ -1,5 +1,7 @@
 package dupradosantini.achievementsystem.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,12 +41,16 @@ public class Player implements Serializable {
     @JoinTable(name="ownership",
                 joinColumns = @JoinColumn(name = "player_id"),
                 inverseJoinColumns = @JoinColumn(name="game_id"))
+    @JsonManagedReference
+    //@JsonIgnore
     private Set<Game> ownedGames;
 
     @ManyToMany
     @JoinTable(name ="unlocks",
                 joinColumns = @JoinColumn(name = "player_id"),
                 inverseJoinColumns = @JoinColumn(name="achievement_id"))
+    @JsonManagedReference
+    @JsonIgnore
     private Set<Achievement> unlockedAchievements;
 
 
