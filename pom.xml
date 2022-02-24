@@ -101,7 +101,7 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <dependencies>
@@ -112,7 +112,7 @@
                         <scope>compile</scope>
                     </dependency>
                 </dependencies>
-            </plugin>
+            </plugin-->
         </plugins>
     </build>
 
