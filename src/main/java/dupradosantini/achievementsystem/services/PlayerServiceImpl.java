@@ -2,9 +2,11 @@ package dupradosantini.achievementsystem.services;
 
 import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.repositories.PlayerRepository;
+import dupradosantini.achievementsystem.services.exceptions.ObjectNotFoundException;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class PlayerServiceImpl implements PlayerService {
     public Player findById(Integer id){
         log.debug("Im in the PlayerService, findById Method");
         Optional<Player> obj = playerRepository.findById(id);
-        return obj.orElse(null);
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Player not found! id: "+ id + ", Tipo: " + Player.class.getName()));
     }
     @Override
     public List<Player> findAll(){
