@@ -61,4 +61,13 @@ class PlayerServiceImplTest {
         assertNotNull(listReturned, "Null list returned (expected something)");
         assertFalse(listReturned.isEmpty(),"List shouldn't be empty");
     }
+    @Test
+    void updatePlayer(){
+        Player player = new Player();
+        player.setId(PLAYER_ID);
+
+        playerRepository.save(player);
+
+        verify(playerRepository,times(1)).save(player);
+    }
 }

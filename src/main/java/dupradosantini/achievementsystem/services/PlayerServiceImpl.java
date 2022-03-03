@@ -35,4 +35,15 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepository.findAll();
     }
 
+    @Override
+    public Player update(Integer id, Player obj){
+        Player newObj = findById(id);
+        newObj.setName(obj.getName());
+        newObj.setOwnedGames(obj.getOwnedGames());
+        newObj.setEmail(obj.getEmail());
+        newObj.setUnlockedAchievements(obj.getUnlockedAchievements());
+        newObj.setProfilePic(obj.getProfilePic());
+        return playerRepository.save(newObj);
+    }
+
 }

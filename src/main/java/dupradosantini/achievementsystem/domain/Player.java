@@ -1,7 +1,9 @@
 package dupradosantini.achievementsystem.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,15 +43,16 @@ public class Player implements Serializable {
     @JoinTable(name="ownership",
                 joinColumns = @JoinColumn(name = "player_id"),
                 inverseJoinColumns = @JoinColumn(name="game_id"))
-    @JsonManagedReference
-    //@JsonIgnore
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "id")
     private Set<Game> ownedGames;
 
     @ManyToMany
     @JoinTable(name ="unlocks",
                 joinColumns = @JoinColumn(name = "player_id"),
                 inverseJoinColumns = @JoinColumn(name="achievement_id"))
-    @JsonManagedReference
+    @JsonManagedReference(value = "player-achievement")
     @JsonIgnore
     private Set<Achievement> unlockedAchievements;
 
@@ -90,6 +93,10 @@ public class Player implements Serializable {
     }
 
     public void setUnlockedAchievements(Set<Achievement> paramAchievements){
+        if(paramAchievements == null){
+            this.unlockedAchievements = null;
+            return;
+        }
         Achievement actual;//definindo uma variavel pra lidar com o elemento atual mais pra frente.
         Iterator<Achievement> achievementIterator = paramAchievements.iterator(); //criando iterador no set de achievements
             //Lógica de inserção

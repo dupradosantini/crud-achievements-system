@@ -30,4 +30,9 @@ public class PlayerController {
         List<Player> list = playerService.findAll();
         return ResponseEntity.ok(list);
     }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Player> update(@PathVariable Integer id,@RequestBody Player obj){
+        Player newPlayer = playerService.update(id,obj);
+        return ResponseEntity.ok().body(newPlayer);
+    }
 }

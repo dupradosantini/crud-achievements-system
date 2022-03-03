@@ -38,11 +38,11 @@ public class Achievement implements Serializable {
     private String picture;
 
     @ManyToOne(optional = false)
-    @JsonBackReference
+    @JsonBackReference(value = "game-achievement")
     private Game game;
 
     @ManyToMany(mappedBy = "unlockedAchievements")
-    @JsonBackReference
+    @JsonBackReference(value = "player-achievement")
     private Set<Player> players;
 
 
