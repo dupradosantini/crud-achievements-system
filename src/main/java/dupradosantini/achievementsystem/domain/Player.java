@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -31,6 +32,7 @@ public class Player implements Serializable {
     @Length(min = 3, max = 30, message = "O nome deve entre 3 e 30 carateres")
     private String name;
 
+    //@UniqueElements
     @NotEmpty(message = "Campo email é obrigatório")
     @Length(max = 30, message = "O email deve ter no máximo 30 caracteres")
     private String email;

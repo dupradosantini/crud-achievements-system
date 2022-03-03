@@ -46,4 +46,12 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepository.save(newObj);
     }
 
+    @Override
+    public Player create(Player obj){
+        obj.setId(null);//Protegendo caso o requerimento contenha um ID, será gerado posteriormente.
+        obj.setUnlockedAchievements(null);
+        obj.setOwnedGames(null);
+        return playerRepository.save(obj);
+    }
+
 }

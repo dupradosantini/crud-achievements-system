@@ -33,5 +33,4 @@ public class GameServiceImpl implements GameService{
     public List<Game> findAll(){
         return gameRepository.findAll();
     }
-
 }
