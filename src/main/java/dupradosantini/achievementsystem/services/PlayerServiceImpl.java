@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,4 +28,9 @@ public class PlayerServiceImpl implements PlayerService {
         Optional<Player> obj = playerRepository.findById(id);
         return obj.orElse(null);
     }
+    @Override
+    public List<Player> findAll(){
+        return playerRepository.findAll();
+    }
+
 }

@@ -5,15 +5,16 @@ import dupradosantini.achievementsystem.repositories.PlayerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
+
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,5 +48,17 @@ class PlayerServiceImplTest {
         assertNotNull(playerReturned, "Null player returned (expected something)");
         verify(playerRepository,times(1)).findById(anyInt());
         //verify(playerRepository,never().findAll()); for when we have a find all method
+    }
+    @Test
+    void findAllPlayers(){
+        Player player = new Player();
+        player.setId(PLAYER_ID);
+        List<Player> list = Arrays.asList(player);
+
+        when(playerRepository.findAll()).thenReturn(list);
+
+        List<Player> listReturned = playerService.findAll();
+        assertNotNull(listReturned, "Null list returned (expected something)");
+        assertFalse(listReturned.isEmpty(),"List shouldn't be empty");
     }
 }
