@@ -12,4 +12,6 @@ public interface PlayerService {
     Player update(Integer id, Player obj);
 
     Player create(Player obj);
+
+    void delete(Integer id);
 }

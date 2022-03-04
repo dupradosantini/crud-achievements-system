@@ -8,10 +8,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -26,10 +29,12 @@ class PlayerServiceImplTest {
 
     private final Integer PLAYER_ID = 1;
 
+    @InjectMocks
     PlayerServiceImpl playerService;
 
     @Mock
     PlayerRepository playerRepository;
+
 
     @BeforeEach
     void setUp() {
@@ -50,7 +55,6 @@ class PlayerServiceImplTest {
 
         assertNotNull(playerReturned, "Null player returned (expected something)");
         verify(playerRepository,times(1)).findById(anyInt());
-        //verify(playerRepository,never().findAll()); for when we have a find all method
     }
     @Test
     void findAllPlayers(){
@@ -63,6 +67,7 @@ class PlayerServiceImplTest {
         List<Player> listReturned = playerService.findAll();
         assertNotNull(listReturned, "Null list returned (expected something)");
         assertFalse(listReturned.isEmpty(),"List shouldn't be empty");
+        verify(playerRepository,times(1)).findAll();
     }
     @Test
     void updatePlayer(){
@@ -93,11 +98,22 @@ class PlayerServiceImplTest {
         Player createdPlayer = playerService.create(testPlayer);
 
         //then
+        verify(playerRepository,times(1)).save(any());
         assertNull(createdPlayer.getUnlockedAchievements(),"Unlocked Achievements should be null");
         assertNull(createdPlayer.getOwnedGames(),"Owned games should be null");
         assertEquals(createdPlayer.getEmail(),testPlayer.getEmail(),"Emails should match");
         assertEquals(createdPlayer.getName(),testPlayer.getName(),"Names should match");
         assertEquals(createdPlayer.getId(),testPlayer.getId(),"Ids should match");
         assertEquals(createdPlayer.getProfilePic(),testPlayer.getProfilePic(),"Profile pics should match");
+    }
+    @Test
+    void deletePlayer(){
+        Player player = new Player();
+        player.setId(1);
+
+        Mockito.when(playerRepository.findById(anyInt())).thenReturn(Optional.of(player));
+        playerService.delete(PLAYER_ID);
+
+        verify(playerRepository,times(1)).deleteById(anyInt());
     }
 }

@@ -53,5 +53,10 @@ public class PlayerServiceImpl implements PlayerService {
         obj.setOwnedGames(null);
         return playerRepository.save(obj);
     }
+    @Override
+    public void delete(Integer id){
+        findById(id);
+        playerRepository.deleteById(id);
+    }
 
 }

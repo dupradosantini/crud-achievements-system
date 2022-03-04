@@ -45,4 +45,9 @@ public class PlayerController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPlayer.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
+        playerService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
