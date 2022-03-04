@@ -32,7 +32,7 @@ public class Player implements Serializable {
     @Length(min = 3, max = 30, message = "O nome deve entre 3 e 30 carateres")
     private String name;
 
-    //@UniqueElements
+    @Column(unique = true)
     @NotEmpty(message = "Campo email é obrigatório")
     @Length(max = 30, message = "O email deve ter no máximo 30 caracteres")
     private String email;
