@@ -1,5 +1,7 @@
 package dupradosantini.achievementsystem.services;
 
+import dupradosantini.achievementsystem.domain.Achievement;
+import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.repositories.PlayerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,5 +72,32 @@ class PlayerServiceImplTest {
         playerRepository.save(player);
 
         verify(playerRepository,times(1)).save(player);
+    }
+    @Test
+    void createPlayer(){
+        //given
+        Player testPlayer = new Player("test","testmail","testurl");
+        testPlayer.setId(PLAYER_ID);
+
+        Game testGame = new Game();
+        testGame.setId(1);
+
+        Achievement testAchievement = new Achievement();
+        testAchievement.setId(1);
+        testAchievement.setGame(testGame);
+
+        testPlayer.setOwnedGames(new HashSet<>(Arrays.asList(testGame)));
+        testPlayer.setUnlockedAchievements(new HashSet<>(Arrays.asList(testAchievement)));
+        //when
+        when(playerService.create(testPlayer)).thenReturn(testPlayer);
+        Player createdPlayer = playerService.create(testPlayer);
+
+        //then
+        assertNull(createdPlayer.getUnlockedAchievements(),"Unlocked Achievements should be null");
+        assertNull(createdPlayer.getOwnedGames(),"Owned games should be null");
+        assertEquals(createdPlayer.getEmail(),testPlayer.getEmail(),"Emails should match");
+        assertEquals(createdPlayer.getName(),testPlayer.getName(),"Names should match");
+        assertEquals(createdPlayer.getId(),testPlayer.getId(),"Ids should match");
+        assertEquals(createdPlayer.getProfilePic(),testPlayer.getProfilePic(),"Profile pics should match");
     }
 }
