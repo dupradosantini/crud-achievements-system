@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.controllers;
 
+import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.services.GameServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -58,5 +62,14 @@ class GameControllerTest {
         mockMvc.perform(get("/games"))
                 .andExpect(status().isOk());
 
+    }
+    @Test
+    void getRegisteredAchievements() throws Exception{
+        Set<Achievement> testAchievements = new HashSet<>();
+
+        when(gameService.findRegisteredAchievements(anyInt())).thenReturn(testAchievements);
+
+        mockMvc.perform(get("/games/1/achievements"))
+                .andExpect(status().isOk());
     }
 }

@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.services;
 
+import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.repositories.GameRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -34,5 +36,11 @@ public class GameServiceImpl implements GameService{
     @Override
     public Page<Game> findAll(Pageable pageable){
         return gameRepository.findAll(pageable);
+    }
+
+    @Override
+    public Set<Achievement> findRegisteredAchievements(Integer id){
+        Game thisGame = findById(id);
+        return thisGame.getAchievements();
     }
 }

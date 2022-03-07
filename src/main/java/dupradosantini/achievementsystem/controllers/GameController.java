@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.controllers;
 
+import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.repositories.GameRepository;
 import dupradosantini.achievementsystem.services.GameService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/games")
@@ -32,5 +34,10 @@ public class GameController {
         Pageable paging = PageRequest.of(page,size);
         Page<Game> returnPage = gameService.findAll(paging);
         return ResponseEntity.ok().body(returnPage);
+    }
+    @GetMapping(value = "{id}/achievements")
+    public ResponseEntity<Set<Achievement>> getAllAchievements(@PathVariable Integer id){ //Better then the Players version, change it later.
+        Set<Achievement> searchedAchievements = gameService.findRegisteredAchievements(id);
+        return ResponseEntity.ok().body(searchedAchievements);
     }
 }
