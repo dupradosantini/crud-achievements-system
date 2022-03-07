@@ -8,6 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,14 +53,14 @@ class GameServiceImplTest {
 
     @Test
     void findAll() {
-        Game game1 = new Game();
-        game1.setId(GAME_ID);
-        List<Game> list = Arrays.asList(game1);
+        Page<Game> gamePage = Page.empty();
+        Pageable paging = PageRequest.of(0,2);
 
-        when(gameRepository.findAll()).thenReturn(list);
+        when(gameRepository.findAll(paging)).thenReturn(gamePage);
 
-        List<Game> listReturned = gameService.findAll();
-        assertNotNull(listReturned,"Null list returned, expected something");
-        assertFalse(listReturned.isEmpty(),"List of games shouldn't be empty");
+        Page<Game> pageReturned = gameService.findAll(paging);
+        assertNotNull(pageReturned,"Null page returned, expected something");
+        assertTrue(pageReturned.isEmpty(),"Page of games should be empty");
+        verify(gameRepository,times(1)).findAll(paging);
     }
 }

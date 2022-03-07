@@ -31,7 +31,7 @@ public class PlayerController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Player>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1") int size){
+    public ResponseEntity<Page<Player>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size){
         Pageable paging = PageRequest.of(page,size);
         Page<Player> returnPage = playerService.findAll(paging);
         return ResponseEntity.ok(returnPage);
