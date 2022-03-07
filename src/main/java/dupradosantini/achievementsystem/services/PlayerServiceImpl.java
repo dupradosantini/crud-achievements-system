@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.services;
 
+import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.repositories.PlayerRepository;
 import dupradosantini.achievementsystem.services.exceptions.ObjectNotFoundException;
@@ -11,8 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -59,6 +62,11 @@ public class PlayerServiceImpl implements PlayerService {
     public void delete(Integer id){
         findById(id);
         playerRepository.deleteById(id);
+    }
+    @Override
+    public Set<Game> findOwnedGames(Integer id){
+        Player thisPlayer = findById(id);
+        return thisPlayer.getOwnedGames();
     }
 
 }

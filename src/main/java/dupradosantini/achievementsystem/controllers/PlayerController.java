@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.controllers;
 
+import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/players")
@@ -53,5 +55,10 @@ public class PlayerController {
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         playerService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping(value = "/{id}/games")
+    public ResponseEntity<Set<Game>> getOwnedGames(@PathVariable Integer id){
+        Set<Game> ownedGames = playerService.findOwnedGames(id);
+        return ResponseEntity.ok().body(ownedGames);
     }
 }

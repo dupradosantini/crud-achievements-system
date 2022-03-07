@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.controllers;
 
+import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.services.PlayerService;
 import dupradosantini.achievementsystem.services.PlayerServiceImpl;
@@ -13,9 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
@@ -61,6 +62,14 @@ class PlayerControllerTest {
         when(playerService.findAll(paging)).thenReturn(playerPage);
 
         mockMvc.perform(get("/players"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    public void testGetOwnedGames() throws Exception{
+        Set<Game> gameList = new HashSet<>();
+        when(playerService.findOwnedGames(anyInt())).thenReturn(gameList);
+
+        mockMvc.perform(get("/players/1/games"))
                 .andExpect(status().isOk());
     }
 }
