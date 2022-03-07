@@ -54,8 +54,7 @@ class PlayerControllerTest {
 
     @Test
     public void testGetAllPlayers() throws Exception{
-        Player player = new Player();
-        player.setId(PLAYER_ID);
+
         Page<Player> playerPage = Page.empty(); // creating empty page
         Pageable paging = PageRequest.of(0,3); //creating pageable object for paging request
 
