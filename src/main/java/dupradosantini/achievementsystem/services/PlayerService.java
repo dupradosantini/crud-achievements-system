@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.services;
 
+import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
 import org.springframework.data.domain.Page;
@@ -20,4 +21,6 @@ public interface PlayerService {
     void delete(Integer id);
 
     Set<Game> findOwnedGames(Integer id);
+
+    Set<Achievement> findUnlockedAchievementsByGame(Integer playerId, Game searchedGame);
 }

@@ -1,18 +1,21 @@
 package dupradosantini.achievementsystem.controllers;
 
+import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
+import dupradosantini.achievementsystem.services.GameService;
 import dupradosantini.achievementsystem.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
+
 import java.util.Set;
 
 @RestController
@@ -21,9 +24,12 @@ public class PlayerController {
 
     private final PlayerService playerService;
 
+    private final GameService gameService;
+
     @Autowired
-    public PlayerController(PlayerService playerService) {
+    public PlayerController(PlayerService playerService, GameService gameService) {
         this.playerService = playerService;
+        this.gameService = gameService;
     }
 
     @GetMapping(value="/{id}")
@@ -60,5 +66,11 @@ public class PlayerController {
     public ResponseEntity<Set<Game>> getOwnedGames(@PathVariable Integer id){
         Set<Game> ownedGames = playerService.findOwnedGames(id);
         return ResponseEntity.ok().body(ownedGames);
+    }
+    @GetMapping(value = "/{playerId}/games/{gameId}/achievements")
+    public ResponseEntity<Set<Achievement>> getUnlockedAchievements(@PathVariable Integer playerId, @PathVariable Integer gameId){
+        Game searchedGame = gameService.findById(gameId);
+        Set<Achievement> achievementSet = playerService.findUnlockedAchievementsByGame(playerId,searchedGame);
+        return ResponseEntity.ok().body(achievementSet);
     }
 }

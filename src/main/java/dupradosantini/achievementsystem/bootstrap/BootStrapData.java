@@ -43,7 +43,7 @@ public class BootStrapData implements CommandLineRunner {
         achievementRepository.saveAll(Arrays.asList(gungeon1,gungeon2));
 
         //Setting which player owns which game.
-        Set<Game> p1games = new HashSet<>(Arrays.asList(g3));
+        Set<Game> p1games = new HashSet<>(Arrays.asList(g2,g3));
         p1.setOwnedGames(p1games);
         //Setting achievements unlocked by player1
         Set<Achievement> playerOneGungeonAchievements = new HashSet<>(Arrays.asList(gungeon1,gungeon2));

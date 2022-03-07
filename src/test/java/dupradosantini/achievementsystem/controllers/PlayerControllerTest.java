@@ -2,7 +2,7 @@ package dupradosantini.achievementsystem.controllers;
 
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
-import dupradosantini.achievementsystem.services.PlayerService;
+import dupradosantini.achievementsystem.services.GameServiceImpl;
 import dupradosantini.achievementsystem.services.PlayerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,9 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.*;
 
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -30,6 +28,8 @@ class PlayerControllerTest {
 
     @Mock
     PlayerServiceImpl playerService;
+    @Mock
+    GameServiceImpl gameService;
 
     PlayerController playerController;
 
@@ -38,7 +38,7 @@ class PlayerControllerTest {
     @BeforeEach
     public void setUp(){
         MockitoAnnotations.openMocks(this);
-        playerController = new PlayerController(playerService);
+        playerController = new PlayerController(playerService,gameService);
         mockMvc = MockMvcBuilders.standaloneSetup(playerController).build();
     }
 
