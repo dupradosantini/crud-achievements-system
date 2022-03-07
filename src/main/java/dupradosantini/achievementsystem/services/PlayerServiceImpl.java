@@ -7,6 +7,8 @@ import dupradosantini.achievementsystem.services.exceptions.ObjectNotFoundExcept
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,8 +33,8 @@ public class PlayerServiceImpl implements PlayerService {
         return obj.orElseThrow(() -> new ObjectNotFoundException("Player not found! id: "+ id + ", Tipo: " + Player.class.getName()));
     }
     @Override
-    public List<Player> findAll(){
-        return playerRepository.findAll();
+    public Page<Player> findAll(Pageable pageable){
+        return playerRepository.findAll(pageable);
     }
 
     @Override

@@ -3,6 +3,9 @@ package dupradosantini.achievementsystem.controllers;
 import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,9 +31,10 @@ public class PlayerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Player>> findAll(){
-        List<Player> list = playerService.findAll();
-        return ResponseEntity.ok(list);
+    public ResponseEntity<Page<Player>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1") int size){
+        Pageable paging = PageRequest.of(page,size);
+        Page<Player> returnPage = playerService.findAll(paging);
+        return ResponseEntity.ok(returnPage);
     }
     @PutMapping(value = "/{id}")
     public ResponseEntity<Player> update(@PathVariable Integer id,@RequestBody Player obj){

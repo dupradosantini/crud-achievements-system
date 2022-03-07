@@ -7,6 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -53,9 +56,10 @@ class PlayerControllerTest {
     public void testGetAllPlayers() throws Exception{
         Player player = new Player();
         player.setId(PLAYER_ID);
-        List<Player> list = Arrays.asList(player);
+        Page<Player> playerPage = Page.empty(); // creating empty page
+        Pageable paging = PageRequest.of(0,3); //creating pageable object for paging request
 
-        when(playerService.findAll()).thenReturn(list);
+        when(playerService.findAll(paging)).thenReturn(playerPage);
 
         mockMvc.perform(get("/players"))
                 .andExpect(status().isOk());

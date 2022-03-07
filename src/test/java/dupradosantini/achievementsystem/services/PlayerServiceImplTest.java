@@ -13,6 +13,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Arrays;
@@ -58,16 +61,16 @@ class PlayerServiceImplTest {
     }
     @Test
     void findAllPlayers(){
-        Player player = new Player();
-        player.setId(PLAYER_ID);
-        List<Player> list = Arrays.asList(player);
 
-        when(playerRepository.findAll()).thenReturn(list);
+        Page<Player> playerPage = Page.empty();
+        Pageable paging = PageRequest.of(0,3);
 
-        List<Player> listReturned = playerService.findAll();
-        assertNotNull(listReturned, "Null list returned (expected something)");
-        assertFalse(listReturned.isEmpty(),"List shouldn't be empty");
-        verify(playerRepository,times(1)).findAll();
+        when(playerRepository.findAll(paging)).thenReturn(playerPage);
+
+        Page<Player> pageReturned = playerService.findAll(paging);
+        assertNotNull(pageReturned, "Null page returned (expected something)");
+        assertTrue(pageReturned.isEmpty(),"Page should be empty");
+        verify(playerRepository,times(1)).findAll(paging);
     }
     @Test
     void updatePlayer(){
