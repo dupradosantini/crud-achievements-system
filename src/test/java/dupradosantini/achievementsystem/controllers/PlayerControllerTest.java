@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.controllers;
 
+import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.services.GameServiceImpl;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.*;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -70,6 +72,14 @@ class PlayerControllerTest {
         when(playerService.findOwnedGames(anyInt())).thenReturn(gameList);
 
         mockMvc.perform(get("/players/1/games"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    public void testGetUnlockedAchievements() throws Exception{
+        Set<Achievement> achievementSet = new HashSet<>();
+        when(playerService.findUnlockedAchievementsByGame(anyInt(),any())).thenReturn(achievementSet);
+
+        mockMvc.perform(get("/players/1/games/1/achievements"))
                 .andExpect(status().isOk());
     }
 }

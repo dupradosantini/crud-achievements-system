@@ -16,4 +16,10 @@ public class ExceptionHandlerController {
         StandardError error = new StandardError(HttpStatus.NOT_FOUND.value(),System.currentTimeMillis(),e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public  ResponseEntity<StandardError> gameNotOwned(RuntimeException e, HttpServletRequest request){
+        StandardError error = new StandardError(HttpStatus.NOT_FOUND.value(),System.currentTimeMillis(),e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
 }

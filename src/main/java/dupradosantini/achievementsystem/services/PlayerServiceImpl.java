@@ -95,6 +95,7 @@ public class PlayerServiceImpl implements PlayerService {
             }
         }else{
             System.out.println("O jogado não possui o jogo especificado.");
+            throw new RuntimeException("O jogador não possui o jogo especificado.");
             //Possivel exceção customizada.
         }
         return returnSet;
