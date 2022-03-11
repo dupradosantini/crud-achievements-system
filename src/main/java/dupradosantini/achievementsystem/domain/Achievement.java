@@ -79,7 +79,7 @@ public class Achievement implements Serializable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", picture='" + picture + '\'' +
-                ", game=" + game +
+                ", gameId=" + game.getId() +
                 '}';
     }
     //Funcao para passar o Id do jogo correspondente.

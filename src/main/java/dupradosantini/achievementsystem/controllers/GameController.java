@@ -2,8 +2,7 @@ package dupradosantini.achievementsystem.controllers;
 
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
-import dupradosantini.achievementsystem.domain.Player;
-import dupradosantini.achievementsystem.repositories.GameRepository;
+
 import dupradosantini.achievementsystem.services.GameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,8 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
+import java.net.URI;
 import java.util.Set;
 
 @RestController
@@ -65,8 +65,21 @@ public class GameController {
             @ApiResponse(responseCode = "404", description = "Game not found",
                     content = @Content) })
     @GetMapping(value = "{id}/achievements")
-    public ResponseEntity<Set<Achievement>> getAllAchievements(@PathVariable Integer id){ //Better then the Players version, change it later.
+    public ResponseEntity<Set<Achievement>> getAllAchievements(@PathVariable Integer id){ //Better than the Players version, change it later.
         Set<Achievement> searchedAchievements = gameService.findRegisteredAchievements(id);
         return ResponseEntity.ok().body(searchedAchievements);
+    }
+
+    @PostMapping
+    public ResponseEntity<Game> createGame(@RequestBody Game obj){
+        Game newGame = gameService.create(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newGame.getId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping(value = "/{id}/achievements/add")
+    public ResponseEntity<Game> addAchievement(@PathVariable Integer id, @RequestBody Set<Achievement> achievementSet){
+        Game updatedGame = gameService.addAchievements(id,achievementSet);
+        return ResponseEntity.ok().body(updatedGame);
     }
 }

@@ -2,7 +2,6 @@ package dupradosantini.achievementsystem.services;
 
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
-import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.repositories.GameRepository;
 import dupradosantini.achievementsystem.services.exceptions.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -11,9 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -21,9 +18,12 @@ public class GameServiceImpl implements GameService{
 
     private final GameRepository gameRepository;
 
+    private final AchievementService achievementService;
+
     @Autowired
-    public GameServiceImpl(GameRepository gameRepository) {
+    public GameServiceImpl(GameRepository gameRepository, AchievementService achievementService) {
         this.gameRepository = gameRepository;
+        this.achievementService = achievementService;
     }
 
     @Override
@@ -42,5 +42,36 @@ public class GameServiceImpl implements GameService{
     public Set<Achievement> findRegisteredAchievements(Integer id){
         Game thisGame = findById(id);
         return thisGame.getAchievements();
+    }
+
+    @Override
+    public Game create(Game obj){
+        obj.setId(null);
+        obj.setPlayers(null);
+        obj.setAchievements(null);
+        return gameRepository.save(obj);
+    }
+
+    @Override
+    public Game addAchievements(Integer id, Set<Achievement> toBeAddedAchievements){
+        Game thisGame = findById(id);
+        Set<Achievement> thisGameAchievements = thisGame.getAchievements();
+        Achievement actual;
+
+        // TODO - Check if achievement already exists in this game.
+
+        if(thisGameAchievements==null){
+            thisGameAchievements = new HashSet<>();
+        }
+
+        Iterator<Achievement> achievementIterator = toBeAddedAchievements.iterator();
+        while (achievementIterator.hasNext()) { //Creating the achievements
+            actual = achievementService.create(achievementIterator.next(), thisGame);
+            thisGameAchievements.add(actual);
+        }
+
+        thisGame.setAchievements(thisGameAchievements);
+
+        return thisGame;
     }
 }

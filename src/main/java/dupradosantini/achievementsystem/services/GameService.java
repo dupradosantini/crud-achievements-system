@@ -12,4 +12,8 @@ public interface GameService {
     Game findById(Integer id);
     Page<Game> findAll(Pageable pageable);
     Set<Achievement> findRegisteredAchievements(Integer id);
+
+    Game create(Game obj);
+
+    Game addAchievements(Integer id, Set<Achievement> achievementSet);
 }
