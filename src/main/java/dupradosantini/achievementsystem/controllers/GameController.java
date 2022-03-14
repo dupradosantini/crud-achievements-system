@@ -3,6 +3,7 @@ package dupradosantini.achievementsystem.controllers;
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 
+import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.services.GameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -70,6 +71,13 @@ public class GameController {
         return ResponseEntity.ok().body(searchedAchievements);
     }
 
+    @Operation(summary = "Creates a new game in our database", description = "Creates a new game in our database, " +
+            "which when newly initialized has no owners and no achievements yet, those need to be added later" +
+            "through other methods, like PUT @ /games/{id}/achievements/add and PUT @ /players/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Game Created",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(description = "Newly Created Game", implementation = Game.class))})})
     @PostMapping
     public ResponseEntity<Game> createGame(@RequestBody Game obj){
         Game newGame = gameService.create(obj);
@@ -77,6 +85,12 @@ public class GameController {
         return ResponseEntity.created(uri).build();
     }
 
+    @Operation(summary = "Creates new achievements and add them to a game.", description = "Creates new achievements " +
+            "while adding them to the game passed via id, thus expanding the achievement pool of a game.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Achievements Created.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(description = "Game with new achievements.", implementation = Game.class))})})
     @PutMapping(value = "/{id}/achievements/add")
     public ResponseEntity<Game> addAchievement(@PathVariable Integer id, @RequestBody Set<Achievement> achievementSet){
         Game updatedGame = gameService.addAchievements(id,achievementSet);

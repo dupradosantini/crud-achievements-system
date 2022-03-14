@@ -138,6 +138,14 @@ public class PlayerController {
         return ResponseEntity.ok().body(achievementSet);
     }
 
+    @Operation(summary = "Adds new achievements to a player", description = "Updates an existing player by adding new Achievements to their unlocked list." +
+            "They must have the required game which the achievement belongs to")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Achievements unlocked",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(description = "Updated player with newly added achievements", implementation = Player.class))}),
+            @ApiResponse(responseCode = "404", description = "Not found - could be game, player or achievement",
+                    content = @Content) })
     @PutMapping(value = "/{playerId}/achievements/add")
     public ResponseEntity<Player> addAchievements(@PathVariable Integer playerId,
                                                             @RequestBody Set<Achievement> achievementSet){
