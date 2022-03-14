@@ -12,16 +12,20 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.doNothing;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PlayerControllerTest {
@@ -81,5 +85,45 @@ class PlayerControllerTest {
 
         mockMvc.perform(get("/players/1/games/1/achievements"))
                 .andExpect(status().isOk());
+    }
+    @Test
+    public void testUpdatePlayer() throws Exception{
+        Player testPlayer = new Player();
+
+        when(playerService.update(anyInt(),any())).thenReturn(testPlayer);
+
+        Integer testId = 1;
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/players/"+ testId )
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{" +
+                        "}");
+
+        mockMvc.perform(builder).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testCreatePlayer() throws Exception{
+        Player testPlayer = new Player();
+
+        when(playerService.create(any())).thenReturn(testPlayer);
+
+        mockMvc.perform(post("/players")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\n" +
+                                "}"))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void testDeletePlayer() throws Exception{
+
+        doNothing().when(playerService).delete(anyInt());
+
+        mockMvc.perform(delete("/players/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\n" +
+                                "}"))
+                .andExpect(status().isNoContent());
     }
 }

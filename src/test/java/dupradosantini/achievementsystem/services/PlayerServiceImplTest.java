@@ -30,7 +30,7 @@ class PlayerServiceImplTest {
 
     private final Integer PLAYER_ID = 1;
 
-    @InjectMocks
+    @Mock
     PlayerServiceImpl playerService;
 
     @Mock
@@ -40,7 +40,9 @@ class PlayerServiceImplTest {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(playerService);
         MockitoAnnotations.openMocks(playerRepository);
+
         playerService = new PlayerServiceImpl(playerRepository);
     }
 
@@ -110,6 +112,7 @@ class PlayerServiceImplTest {
     }
     @Test
     void deletePlayer(){
+
         Player player = new Player();
         player.setId(1);
 
@@ -118,4 +121,44 @@ class PlayerServiceImplTest {
 
         verify(playerRepository,times(1)).deleteById(anyInt());
     }
+    @Test
+    void findOwnedGames(){
+        Player player = new Player();
+        player.setId(1);
+
+        Optional<Player> playerOptional = Optional.of(player);
+
+        doReturn(playerOptional).when(playerRepository).findById(anyInt());
+
+        Set<Game> returnedSet = playerService.findOwnedGames(player.getId());
+
+        assertNull(returnedSet,"returned set should be null");
+    }
+
+    @Test
+    void findUnlockedAchievementsHappyFlow(){
+        Game testGame = new Game();
+        testGame.setId(1);
+        Achievement testAchievement = new Achievement(testGame,"test","test");
+        Set<Achievement> achievementSet = new HashSet<>();
+        achievementSet.add(testAchievement);
+
+        Player player = new Player();
+        player.setId(1);
+
+        testGame.setAchievements(achievementSet);
+        Set<Game> testSet = new HashSet<>();
+        testSet.add(testGame);
+
+        player.setOwnedGames(testSet);
+        player.setUnlockedAchievements(achievementSet);
+
+        Optional<Player> playerOptional = Optional.of(player);
+        doReturn(playerOptional).when(playerRepository).findById(anyInt());
+
+        Set<Achievement> returnedSet = playerService.findUnlockedAchievementsByGame(player.getId(),testGame);
+
+        assertEquals(achievementSet,returnedSet,"Sets should be equal");
+    }
+    //TODO Not Happy flow test above
 }

@@ -73,14 +73,25 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Set<Achievement> findUnlockedAchievementsByGame(Integer playerId, Game searchedGame){
+        //Getting the required player
         Player thisPlayer = findById(playerId);
+        //Allocating all the achievements
         Set<Achievement> allAchievements = thisPlayer.getUnlockedAchievements();
+        if(allAchievements == null){
+            allAchievements = new HashSet<>();
+        }
+        //This will be our return set
         Set<Achievement> returnSet = new HashSet<>();
 
+        //Auxiliary variable and iterator
         Achievement actual;
         Iterator<Achievement> achievementIterator = allAchievements.iterator();
 
+        //Allocating the players owned games.
         Set<Game> ownedGames = thisPlayer.getOwnedGames();
+        if(ownedGames == null){
+            ownedGames = new HashSet<>();
+        }
 
         if(ownedGames.contains(searchedGame)) {
             while (achievementIterator.hasNext()) { //enquanto houver achievements no set
