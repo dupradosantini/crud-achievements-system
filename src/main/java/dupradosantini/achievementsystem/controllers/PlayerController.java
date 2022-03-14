@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +47,10 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Player not found",
             content = @Content)})
     @GetMapping(value="/{id}")
-    public ResponseEntity<Player> findById( @Parameter(description = "ID of Player to be searched") @PathVariable Integer id){
+    public ResponseEntity<Player> findById( @Parameter(description = "ID of Player to be searched")
+                                                @PathVariable Integer id){
         Player obj = this.playerService.findById(id);
+        System.out.println("Os jogos do player são:" + obj.getOwnedGames());
         return ResponseEntity.ok().body(obj);
     }
     @Operation(summary = "Gets a page of Players")
@@ -60,7 +61,10 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Page not found",
             content = @Content) })
     @GetMapping
-    public ResponseEntity<Page<Player>> findAll(@Parameter(description = "Page Number") @RequestParam(defaultValue = "0") int page, @Parameter(description = "Amount of Players per page.") @RequestParam(defaultValue = "2") int size){
+    public ResponseEntity<Page<Player>> findAll(@Parameter(description = "Page Number")
+                                                    @RequestParam(defaultValue = "0") int page,
+                                                @Parameter(description = "Amount of Players per page.")
+                                                    @RequestParam(defaultValue = "2") int size){
         Pageable paging = PageRequest.of(page,size);
         Page<Player> returnPage = playerService.findAll(paging);
         return ResponseEntity.ok(returnPage);
@@ -127,9 +131,17 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Not found - See Error message",
                     content = @Content) })
     @GetMapping(value = "/{playerId}/games/{gameId}/achievements")
-    public ResponseEntity<Set<Achievement>> getUnlockedAchievements(@PathVariable Integer playerId, @PathVariable Integer gameId){
+    public ResponseEntity<Set<Achievement>> getUnlockedAchievements(@PathVariable Integer playerId,
+                                                                    @PathVariable Integer gameId){
         Game searchedGame = gameService.findById(gameId);
         Set<Achievement> achievementSet = playerService.findUnlockedAchievementsByGame(playerId,searchedGame);
         return ResponseEntity.ok().body(achievementSet);
+    }
+
+    @PutMapping(value = "/{playerId}/achievements/add")
+    public ResponseEntity<Player> addAchievements(@PathVariable Integer playerId,
+                                                            @RequestBody Set<Achievement> achievementSet){
+        Player updatedPlayer = playerService.unlockAchievements(playerId, achievementSet);
+        return ResponseEntity.ok().body(updatedPlayer);
     }
 }

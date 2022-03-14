@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -76,5 +77,12 @@ public class Game implements Serializable {
                 ", coverImage='" + coverImage + '\'' +
                 ", genre='" + genre + '\'' +
                 '}';
+    }
+
+    public void addAchievement(Achievement toBeAddedAchievement){
+        if(this.achievements==null){
+            achievements = new HashSet<>();
+        }
+        achievements.add(toBeAddedAchievement);
     }
 }

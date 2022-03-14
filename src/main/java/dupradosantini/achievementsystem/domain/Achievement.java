@@ -84,6 +84,6 @@ public class Achievement implements Serializable {
     }
     //Funcao para passar o Id do jogo correspondente.
     public Integer getGameId() {
-        return game.getId();
+        return this.game.getId();
     }
 }

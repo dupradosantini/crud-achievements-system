@@ -6,7 +6,6 @@ import dupradosantini.achievementsystem.domain.Player;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Set;
 
 public interface PlayerService {
@@ -23,4 +22,6 @@ public interface PlayerService {
     Set<Game> findOwnedGames(Integer id);
 
     Set<Achievement> findUnlockedAchievementsByGame(Integer playerId, Game searchedGame);
+
+    Player unlockAchievements(Integer playerId, Set<Achievement> achievementSet);
 }

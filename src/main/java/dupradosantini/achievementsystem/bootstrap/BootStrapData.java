@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,7 +49,7 @@ public class BootStrapData implements CommandLineRunner {
         //Setting achievements unlocked by player1
         Set<Achievement> playerOneGungeonAchievements = new HashSet<>(Arrays.asList(gungeon1,gungeon2));
         p1.setUnlockedAchievements(playerOneGungeonAchievements);
-        playerRepository.saveAll(Arrays.asList(p1));
+        playerRepository.saveAll(Collections.singleton(p1));
 
         System.out.println("Bootstrap Initialization");
 

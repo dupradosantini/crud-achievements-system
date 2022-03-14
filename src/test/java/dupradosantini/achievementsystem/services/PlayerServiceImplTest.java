@@ -36,14 +36,17 @@ class PlayerServiceImplTest {
     @Mock
     PlayerRepository playerRepository;
 
+    @Mock
+    AchievementServiceImpl achievementService;
+
 
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(playerService);
         MockitoAnnotations.openMocks(playerRepository);
-
-        playerService = new PlayerServiceImpl(playerRepository);
+        MockitoAnnotations.openMocks(achievementService);
+        playerService = new PlayerServiceImpl(playerRepository,achievementService);
     }
 
     @Test
@@ -95,8 +98,8 @@ class PlayerServiceImplTest {
         testAchievement.setId(1);
         testAchievement.setGame(testGame);
 
-        testPlayer.setOwnedGames(new HashSet<>(Arrays.asList(testGame)));
-        testPlayer.setUnlockedAchievements(new HashSet<>(Arrays.asList(testAchievement)));
+        testPlayer.setOwnedGames(new HashSet<>(Collections.singleton(testGame)));
+        testPlayer.setUnlockedAchievements(new HashSet<>(Collections.singleton(testAchievement)));
         //when
         when(playerService.create(testPlayer)).thenReturn(testPlayer);
         Player createdPlayer = playerService.create(testPlayer);
@@ -146,6 +149,7 @@ class PlayerServiceImplTest {
         Player player = new Player();
         player.setId(1);
 
+
         testGame.setAchievements(achievementSet);
         Set<Game> testSet = new HashSet<>();
         testSet.add(testGame);
@@ -161,4 +165,30 @@ class PlayerServiceImplTest {
         assertEquals(achievementSet,returnedSet,"Sets should be equal");
     }
     //TODO Not Happy flow test above
+
+    @Test
+    void unlockAchievements(){
+        Player testPlayer = new Player();
+        testPlayer.setId(PLAYER_ID);
+
+        Game testGame = new Game();
+        testGame.setId(PLAYER_ID);
+        testPlayer.setOwnedGames(Collections.singleton(testGame));
+
+        Achievement testAchievement = new Achievement();
+        testAchievement.setId(PLAYER_ID);
+        testAchievement.setGame(testGame);
+        testGame.setAchievements(Collections.singleton(testAchievement));
+
+        Optional<Player> playerOptional = Optional.of(testPlayer);
+
+        doReturn(playerOptional).when(playerRepository).findById(anyInt());
+        doReturn(testAchievement).when(achievementService).findById(anyInt());
+        when(playerRepository.save(any())).thenReturn(testPlayer);
+
+       Player returnedPlayer = playerService.unlockAchievements(testPlayer.getId(),Collections.singleton(testAchievement));
+
+       verify(playerRepository,times(1)).save(any());
+       assertEquals(Collections.singleton(testAchievement),returnedPlayer.getUnlockedAchievements(),"Achievements should match");
+    }
 }

@@ -21,16 +21,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PlayerControllerTest {
-
-    private final Integer PLAYER_ID = 1;
 
     @Mock
     PlayerServiceImpl playerService;
@@ -51,7 +48,6 @@ class PlayerControllerTest {
     @Test
     public void testGetPlayer() throws Exception{
         Player player = new Player();
-        player.setId(PLAYER_ID);
 
         when(playerService.findById(anyInt())).thenReturn(player);
 
@@ -92,7 +88,7 @@ class PlayerControllerTest {
 
         when(playerService.update(anyInt(),any())).thenReturn(testPlayer);
 
-        Integer testId = 1;
+        int testId = 1;
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/players/"+ testId )
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -125,5 +121,21 @@ class PlayerControllerTest {
                         .content("{\n" +
                                 "}"))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void addAchievements() throws Exception{
+
+        Player testPlayer = new Player();
+
+        doReturn(testPlayer).when(playerService).unlockAchievements(anyInt(),any());
+        int testId = 1;
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/players/"+ testId +"/achievements/add")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("[{" +
+                        "}]");
+
+        mockMvc.perform(builder).andExpect(status().isOk());
     }
 }

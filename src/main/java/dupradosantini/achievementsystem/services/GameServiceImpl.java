@@ -55,23 +55,10 @@ public class GameServiceImpl implements GameService{
     @Override
     public Game addAchievements(Integer id, Set<Achievement> toBeAddedAchievements){
         Game thisGame = findById(id);
-        Set<Achievement> thisGameAchievements = thisGame.getAchievements();
-        Achievement actual;
 
-        // TODO - Check if achievement already exists in this game.
-
-        if(thisGameAchievements==null){
-            thisGameAchievements = new HashSet<>();
+        for (Achievement actual : toBeAddedAchievements) { //Creating the achievements
+            thisGame.addAchievement(achievementService.create(actual, thisGame));
         }
-
-        Iterator<Achievement> achievementIterator = toBeAddedAchievements.iterator();
-        while (achievementIterator.hasNext()) { //Creating the achievements
-            actual = achievementService.create(achievementIterator.next(), thisGame);
-            thisGameAchievements.add(actual);
-        }
-
-        thisGame.setAchievements(thisGameAchievements);
-
-        return thisGame;
+        return gameRepository.save(thisGame);
     }
 }

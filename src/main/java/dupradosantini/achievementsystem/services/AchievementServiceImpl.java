@@ -3,6 +3,7 @@ package dupradosantini.achievementsystem.services;
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.repositories.AchievementRepository;
+import dupradosantini.achievementsystem.services.exceptions.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,9 @@ public class AchievementServiceImpl implements AchievementService{
     @Override
     public Achievement findById(Integer id){ //para ser usado talvez num get de achievement.
         Optional<Achievement> obj = achievementRepository.findById(id);
-        return obj.orElse(null);
+        System.out.println("Im in the achievement service, findById");
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Achievement not found!! Id: " + id +
+                " Tipo: " + Achievement.class.getName() +" Você pode criar o achievement em /games/{id}/achievements/add"));
     }
 
     @Override

@@ -2,7 +2,6 @@ package dupradosantini.achievementsystem.services;
 
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
-import dupradosantini.achievementsystem.repositories.AchievementRepository;
 import dupradosantini.achievementsystem.repositories.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -99,12 +98,14 @@ class GameServiceImplTest {
         testSet.add(testAchiev);
 
         when(gameRepository.findById(anyInt())).thenReturn(gameOptional); //Mock dos comportamentos necessarios.
+        when(gameRepository.save(any())).thenReturn(testGame);
         doReturn(testAchiev).when(achievementService).create(any(),any());
 
         Game returnedGame = gameService.addAchievements(GAME_ID,testSet); // chamada da funcao em teste
 
         verify(gameRepository,times(1)).findById(any()); //checagens.
         verify(achievementService,times(1)).create(any(),any());
+        verify(gameRepository,times(1)).save(any());
 
         assertEquals(returnedGame.getAchievements(),testSet,"Achievements should match");
 

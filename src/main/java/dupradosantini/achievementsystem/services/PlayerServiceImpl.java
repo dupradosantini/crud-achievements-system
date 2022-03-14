@@ -23,10 +23,14 @@ public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
 
+    private final AchievementServiceImpl achievementService;
+
+
 
     @Autowired
-    public PlayerServiceImpl(PlayerRepository playerRepository) {
+    public PlayerServiceImpl(PlayerRepository playerRepository, AchievementServiceImpl achievementService) {
         this.playerRepository = playerRepository;
+        this.achievementService = achievementService;
     }
 
     @Override
@@ -110,5 +114,25 @@ public class PlayerServiceImpl implements PlayerService {
             //Possivel exceção customizada.
         }
         return returnSet;
+    }
+
+    @Override
+    public Player unlockAchievements(Integer playerId, Set<Achievement> achievementSet){
+
+        Player updatedPlayer = findById(playerId);
+        Set<Game> ownedGames = updatedPlayer.getOwnedGames();
+
+        for (Achievement actual : achievementSet) {
+            actual = achievementService.findById(actual.getId());
+            if (ownedGames.contains(actual.getGame())) {
+                updatedPlayer.addAchievement(actual);
+            } else {
+                //se o jogador nao possui o jogo necessario retorna erro "jogador nao possui esse jogo"
+                System.out.println("O Jogador não possui o Jogo requerido para desbloquear esse achievement"
+                        + "o jogo é: " + actual.getGameId());
+            }
+        }
+        //Returns the saved player.
+        return playerRepository.save(updatedPlayer);
     }
 }

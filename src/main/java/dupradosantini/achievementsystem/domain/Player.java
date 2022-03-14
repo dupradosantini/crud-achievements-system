@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -94,28 +93,38 @@ public class Player implements Serializable {
                 '}';
     }
 
-    public void setUnlockedAchievements(Set<Achievement> paramAchievements){
+     //Used only for bootstrap initialization
+    public void setUnlockedAchievements(Set<Achievement> paramAchievements){ //Used only for bootstrap initialization.
         if(paramAchievements == null){
             this.unlockedAchievements = null;
             return;
         }
-        Achievement actual;//definindo uma variavel pra lidar com o elemento atual mais pra frente.
-        Iterator<Achievement> achievementIterator = paramAchievements.iterator(); //criando iterador no set de achievements
-            //Lógica de inserção
-            while(achievementIterator.hasNext()){ //enquanto houver elementos no set
-                actual = achievementIterator.next(); //atribuindo o elemento atual na variavel actual
-                if(ownedGames.contains(actual.getGame())){ //se há o game nos owned-games.
-                    //adiciono ao set.
-                    if(this.unlockedAchievements == null){//se o conjunto atual é null, precisamos inicializar assim
-                        this.unlockedAchievements = new HashSet<>(Arrays.asList(actual));
-                    }else { //senao só add
-                        this.unlockedAchievements.add(actual);
-                    }
-                }else{
-                    //se o jogador nao possui o jogo necessario retorna erro "jogador nao possui esse jogo"
-                    System.out.println("O Jogador não possui o Jogo requerido para desbloquear esse achievement");
-                    return;
+        if(this.ownedGames == null){
+            setOwnedGames(new HashSet<>());
+        }
+        //criando iterador no set de achievements
+        //Lógica de inserção
+        for (Achievement actual : paramAchievements) { //enquanto houver elementos no set
+            if (this.ownedGames.contains(actual.getGame())) { //se há o game nos owned-games.
+                //adiciono ao set.
+                if (this.unlockedAchievements == null) {//se o conjunto atual é null, precisamos inicializar assim
+                    this.unlockedAchievements = new HashSet<>(Collections.singleton(actual));
+                } else { //senao só add
+                    this.unlockedAchievements.add(actual);
                 }
+            } else {
+                //se o jogador nao possui o jogo necessario retorna erro "jogador nao possui esse jogo"
+                System.out.println("O Jogador não possui o Jogo requerido para desbloquear esse achievement22222");
+                System.out.println("O jogo do achievement é:" + actual.getGameId());
+                return;
             }
+        }
+    }
+
+    public void addAchievement(Achievement toBeAddedAchiev){
+        if(unlockedAchievements==null){
+            unlockedAchievements= new HashSet<>();
+        }
+        unlockedAchievements.add(toBeAddedAchiev);
     }
 }
