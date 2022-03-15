@@ -30,7 +30,7 @@ public class BootStrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args){
-        Player p1 = new Player("Jogador1Nome","jogador1@gmail.com","urlpraprofilepic");
+       /* Player p1 = new Player("Jogador1Nome","jogador1@gmail.com","urlpraprofilepic");
         Player p2 = new Player("NomeJogador2","jogador2@hotmail.com");
         playerRepository.saveAll(Arrays.asList(p1,p2));
 
@@ -57,6 +57,6 @@ public class BootStrapData implements CommandLineRunner {
         System.out.println("Number of Games: " + gameRepository.count());
         System.out.println("Number of Achievements: " + achievementRepository.count());
 
-        //System.out.println("AchievementId: " + gungeon1.getId());
+        //System.out.println("AchievementId: " + gungeon1.getId());*/
     }
 }
