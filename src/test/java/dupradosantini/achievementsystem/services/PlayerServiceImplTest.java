@@ -191,4 +191,25 @@ class PlayerServiceImplTest {
        verify(playerRepository,times(1)).save(any());
        assertEquals(Collections.singleton(testAchievement),returnedPlayer.getUnlockedAchievements(),"Achievements should match");
     }
+
+    @Test
+    void addGame(){
+        Player testPlayer = new Player();
+        testPlayer.setId(PLAYER_ID);
+
+        Game testGame = new Game();
+        testGame.setId(PLAYER_ID);
+
+        Optional<Player> playerOptional = Optional.of(testPlayer);
+
+        doReturn(playerOptional).when(playerRepository).findById(anyInt());
+        when(playerRepository.save(any())).thenReturn(testPlayer);
+
+        Player returnedPlayer = playerService.addGame(testPlayer.getId(),Collections.singleton(testGame));
+
+        verify(playerRepository,times(1)).save(any());
+        assertEquals(Collections.singleton(testGame),returnedPlayer.getOwnedGames(),"Games should match");
+
+
+    }
 }

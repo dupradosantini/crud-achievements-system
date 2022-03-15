@@ -152,4 +152,11 @@ public class PlayerController {
         Player updatedPlayer = playerService.unlockAchievements(playerId, achievementSet);
         return ResponseEntity.ok().body(updatedPlayer);
     }
+
+    @PutMapping(value = "/{playerId}/games/add")
+    public ResponseEntity<Player> addGame(@PathVariable Integer playerId,
+                                          @RequestBody Set<Game> gameSet){
+        Player updatedPlayer = playerService.addGame(playerId,gameSet);
+        return ResponseEntity.ok().body(updatedPlayer);
+    }
 }

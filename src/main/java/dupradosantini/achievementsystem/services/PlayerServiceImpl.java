@@ -135,4 +135,16 @@ public class PlayerServiceImpl implements PlayerService {
         //Returns the saved player.
         return playerRepository.save(updatedPlayer);
     }
+
+    @Override
+    public Player addGame(Integer playerId, Set<Game> gameSet){
+
+        Player updatedPlayer = findById(playerId);
+
+        for(Game actual : gameSet){
+            updatedPlayer.addGame(actual);
+        }
+
+        return playerRepository.save(updatedPlayer);
+    }
 }

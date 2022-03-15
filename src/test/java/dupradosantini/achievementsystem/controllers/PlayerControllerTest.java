@@ -138,4 +138,19 @@ class PlayerControllerTest {
 
         mockMvc.perform(builder).andExpect(status().isOk());
     }
+
+    @Test
+    void addGame() throws Exception{
+        Player testPlayer = new Player();
+
+        doReturn(testPlayer).when(playerService).addGame(anyInt(),any());
+        int testId = 1;
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/players/"+ testId +"/games/add")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("[{" +
+                        "}]");
+
+        mockMvc.perform(builder).andExpect(status().isOk());
+    }
 }

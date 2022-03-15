@@ -127,4 +127,15 @@ public class Player implements Serializable {
         }
         unlockedAchievements.add(toBeAddedAchiev);
     }
+
+    public void addGame(Game toBeAddedGame){
+        if (ownedGames==null){
+            ownedGames=new HashSet<>();
+        }
+        if(ownedGames.contains(toBeAddedGame)){
+            System.out.println("O jogador já possui esse jogo");
+        }else {
+            ownedGames.add(toBeAddedGame);
+        }
+    }
 }
