@@ -10,7 +10,9 @@ import java.util.Set;
 
 public interface GameService {
     Game findById(Integer id);
+
     Page<Game> findAll(Pageable pageable);
+
     Set<Achievement> findRegisteredAchievements(Integer id);
 
     Game create(Game obj);

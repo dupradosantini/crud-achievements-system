@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -103,7 +104,7 @@ class GameControllerTest {
         Game testGame = new Game();
 
         when(gameService.addAchievements(anyInt(),any())).thenReturn(testGame);
-        Integer testId = 1;
+        int testId = 1;
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/games/"+ testId + "/achievements/add")
                         .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)

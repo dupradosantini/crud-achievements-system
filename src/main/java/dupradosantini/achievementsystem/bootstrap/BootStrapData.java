@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
+//This class is only useful while H2 Console is running and we do a Create-Drop for devtest purposes
 @Component
 public class BootStrapData implements CommandLineRunner {
 

@@ -40,8 +40,8 @@ public class GameServiceImpl implements GameService{
 
     @Override
     public Set<Achievement> findRegisteredAchievements(Integer id){
-        Game thisGame = findById(id);
-        return thisGame.getAchievements();
+        return gameRepository.findAchievementsOfGame(id);
+        //TODO pensar no caso da exceção jogo nao encontrado
     }
 
     @Override

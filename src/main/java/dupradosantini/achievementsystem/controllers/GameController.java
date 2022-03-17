@@ -3,7 +3,6 @@ package dupradosantini.achievementsystem.controllers;
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 
-import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.services.GameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -109,5 +110,19 @@ class GameServiceImplTest {
 
         assertEquals(returnedGame.getAchievements(),testSet,"Achievements should match");
 
+    }
+
+    @Test
+    void findRegisteredAchievements(){
+
+        Achievement testAchievement = new Achievement();
+
+        when(gameRepository.findAchievementsOfGame(anyInt())).thenReturn(Collections.singleton(testAchievement));
+
+        Set<Achievement> returnedAchievementSet = gameRepository.findAchievementsOfGame(GAME_ID);
+
+        verify(gameRepository,times(1)).findAchievementsOfGame(anyInt());
+
+        assertEquals(Collections.singleton(testAchievement), returnedAchievementSet, "Achievements should match");
     }
 }
