@@ -29,8 +29,9 @@ public class Game implements Serializable {
     @Length(min = 3, max = 30, message = "O nome deve entre 3 e 30 carateres")
     private String name;
 
+    @Column(name = "cover_image")
     @Length(max=50, message = "O URL para a imagem publicitária deve ter no máximo 50 caracteres")
-    private String coverImage;
+    private String cover_image;
 
     @NotEmpty
     @Length(min = 2, max=15, message = "O genero deve ter entre 2 e 15 caracteres")
@@ -45,9 +46,9 @@ public class Game implements Serializable {
     @JsonManagedReference(value = "game-achievement")
     private Set<Achievement> achievements;
 
-    public Game(String name, String coverImage, String genre) {
+    public Game(String name, String cover_image, String genre) {
         this.name = name;
-        this.coverImage = coverImage;
+        this.cover_image = cover_image;
         this.genre = genre;
     }
 
@@ -74,7 +75,7 @@ public class Game implements Serializable {
         return "Game{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", coverImage='" + coverImage + '\'' +
+                ", cover_image='" + cover_image + '\'' +
                 ", genre='" + genre + '\'' +
                 '}';
     }

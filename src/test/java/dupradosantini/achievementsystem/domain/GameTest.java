@@ -3,7 +3,7 @@ package dupradosantini.achievementsystem.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,7 +39,7 @@ class GameTest {
 
     @Test
     void getCoverImage() {
-        assertEquals(TEST_COVER_IMAGE,testGame.getCoverImage(),"Games CoverImage Urls do not match");
+        assertEquals(TEST_COVER_IMAGE,testGame.getCover_image(),"Games CoverImage Urls do not match");
     }
 
     @Test
@@ -52,7 +52,7 @@ class GameTest {
         //given
         player1 = new Player(); //creating the test player
         player1.setId(1);  //setting its id (avoid null pointer)
-        players = new HashSet<>(Arrays.asList(player1)); //(creating the player set)
+        players = new HashSet<>(Collections.singleton(player1)); //(creating the player set)
 
         //when
         testGame.setPlayers(players); //assigning the player set to the games list of players

@@ -3,13 +3,12 @@ package dupradosantini.achievementsystem.services;
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
-import dupradosantini.achievementsystem.repositories.GameRepository;
 import dupradosantini.achievementsystem.repositories.PlayerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.mockito.InjectMocks;
+
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -18,7 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import javax.persistence.criteria.CriteriaBuilder;
+
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -157,8 +156,9 @@ class PlayerServiceImplTest {
         player.setOwnedGames(testSet);
         player.setUnlockedAchievements(achievementSet);
 
-        Optional<Player> playerOptional = Optional.of(player);
-        doReturn(playerOptional).when(playerRepository).findById(anyInt());
+
+        doReturn(achievementSet).when(playerRepository).getAllUnlockedAchievements(anyInt());
+        doReturn(testSet).when(playerRepository).getAllOwnedGames(anyInt());
 
         Set<Achievement> returnedSet = playerService.findUnlockedAchievementsByGame(player.getId(),testGame);
 

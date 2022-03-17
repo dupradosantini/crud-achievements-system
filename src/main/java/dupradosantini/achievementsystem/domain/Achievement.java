@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -16,7 +17,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "Achievement")
+@Table(name = "achievement")
 public class Achievement implements Serializable {
 
     private static final long serialVersionUID = 1L; //serialization ID
@@ -26,14 +28,17 @@ public class Achievement implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "name")
     @NotEmpty(message = "Campo nome é obrigatório")
     @Length(min = 3, max = 30, message = "O nome deve entre 3 e 30 carateres")
     private String name;
 
+    @Column(name = "description")
     @NotEmpty(message = "Campo descrição é obrigatório")
     @Length(min = 3, max = 50, message = "A descrição deve ter entre 3 e 50 carateres")
     private String description;
 
+    @Column(name = "picture")
     @Length(max=50, message = "O URL para a imagem da conquista deve ter no máximo 50 caracteres")
     private String picture;
 
