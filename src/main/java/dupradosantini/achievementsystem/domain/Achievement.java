@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -44,6 +43,7 @@ public class Achievement implements Serializable {
 
     @ManyToOne(optional = false)
     @JsonBackReference(value = "game-achievement")
+    //@JsonIgnore
     private Game game;
 
     @ManyToMany(mappedBy = "unlockedAchievements")

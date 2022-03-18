@@ -3,7 +3,6 @@ package dupradosantini.achievementsystem.controllers;
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
-import dupradosantini.achievementsystem.services.GameService;
 import dupradosantini.achievementsystem.services.PlayerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,12 +31,10 @@ public class PlayerController {
 
     private final PlayerService playerService;
 
-    private final GameService gameService;
 
     @Autowired
-    public PlayerController(PlayerService playerService, GameService gameService) {
+    public PlayerController(PlayerService playerService) {
         this.playerService = playerService;
-        this.gameService = gameService;
     }
     @Operation(summary = "Get a Player by it's ID")
     @ApiResponses(value = {
@@ -74,10 +71,10 @@ public class PlayerController {
             "as their owned games and unlocked achievements")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Player updated",
-                    content = {@Content(mediaType = "application/json",
-                    schema = @Schema(description = "Updated player", implementation = Player.class))}),
+                content = {@Content(mediaType = "application/json",
+                schema = @Schema(description = "Updated player", implementation = Player.class))}),
             @ApiResponse(responseCode = "404", description = "Player not found",
-                    content = @Content) })
+                content = @Content) })
     @PutMapping(value = "/{id}")
     public ResponseEntity<Player> update(@PathVariable Integer id,@RequestBody Player obj){
         Player newPlayer = playerService.update(id,obj);
@@ -88,10 +85,10 @@ public class PlayerController {
             "and unlocked achievements are non-existent (clean new player), requiring to be added later via PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Player created",
-                    content = {@Content(mediaType = "application/json",
-                    schema = @Schema(description = "Updated player", implementation = Player.class))}),
+                content = {@Content(mediaType = "application/json",
+                schema = @Schema(description = "Updated player", implementation = Player.class))}),
             @ApiResponse(responseCode = "404", description = "Player not found",
-                    content = @Content) })
+                content = @Content) })
     @PostMapping
     public ResponseEntity<Player> create(@RequestBody Player obj){
         Player newPlayer = playerService.create(obj);
@@ -102,9 +99,9 @@ public class PlayerController {
     @Operation(summary = "Deletes an existing player")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Player deleted",
-                    content = @Content),
+                content = @Content),
             @ApiResponse(responseCode = "404", description = "Player not found",
-                    content = @Content) })
+                content = @Content) })
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         playerService.delete(id);
@@ -114,9 +111,9 @@ public class PlayerController {
     @Operation(summary = "Gets the games owned by a player.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Games retrieved",
-                    content = @Content),
+                content = @Content),
             @ApiResponse(responseCode = "404", description = "Player not found",
-                    content = @Content) })
+                content = @Content) })
     @GetMapping(value = "/{id}/games")
     public ResponseEntity<Set<Game>> getOwnedGames(@PathVariable Integer id){
         Set<Game> ownedGames = playerService.findOwnedGames(id);
@@ -127,14 +124,13 @@ public class PlayerController {
             description = "Fetches the unlocked achievements that a player has in a specific game.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Achievements retrieved",
-                    content = @Content),
+                content = @Content),
             @ApiResponse(responseCode = "404", description = "Not found - See Error message",
-                    content = @Content) })
+                content = @Content) })
     @GetMapping(value = "/{playerId}/games/{gameId}/achievements")
     public ResponseEntity<Set<Achievement>> getUnlockedAchievements(@PathVariable Integer playerId,
                                                                     @PathVariable Integer gameId){
-        Game searchedGame = gameService.findById(gameId);
-        Set<Achievement> achievementSet = playerService.findUnlockedAchievementsByGame(playerId,searchedGame);
+        Set<Achievement> achievementSet = playerService.findUnlockedAchievementsByGame(playerId,gameId);
         return ResponseEntity.ok().body(achievementSet);
     }
 
@@ -143,7 +139,7 @@ public class PlayerController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Achievements unlocked",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(description = "Updated player with newly added achievements", implementation = Player.class))}),
+                    schema = @Schema(description = "Updated player with newly added achievements", implementation = Player.class))}),
             @ApiResponse(responseCode = "404", description = "Not found - could be game, player or achievement",
                     content = @Content) })
     @PutMapping(value = "/{playerId}/achievements/add")
@@ -153,6 +149,15 @@ public class PlayerController {
         return ResponseEntity.ok().body(updatedPlayer);
     }
 
+    
+    @Operation(summary = "Adds an existing game to a player's library", description = "Registers an existing game to a specific player's library," +
+            " being able to see it under the 'ownedGames' category.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Game has been registered as owned by the player.",
+                content = {@Content(mediaType = "application/json",
+                schema = @Schema(description = "Updated player with newly added games to their library", implementation = Player.class))}),
+            @ApiResponse(responseCode = "404",description = "Not found - could be the game or the player - See the body of response for details",
+                content = @Content) })
     @PutMapping(value = "/{playerId}/games/add")
     public ResponseEntity<Player> addGame(@PathVariable Integer playerId,
                                           @RequestBody Set<Game> gameSet){

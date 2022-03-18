@@ -3,8 +3,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import javax.transaction.Transactional;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +18,6 @@ class PlayerTest {
     Game game1;
     Set<Game> testGame; //using generics
     Achievement achievement1;
-    Set<Achievement> testAchievements;
 
     @BeforeEach
     void setUp() {
@@ -51,7 +49,7 @@ class PlayerTest {
         //given
         game1 = new Game();
         game1.setId(1);
-        testGame = new HashSet<>(Arrays.asList(game1));
+        testGame = new HashSet<>(Collections.singleton(game1));
 
         //when
         testPlayer.setOwnedGames(testGame);
@@ -65,13 +63,13 @@ class PlayerTest {
         //Criando o jogo e adicionando a biblioteca do player
         game1 = new Game();
         game1.setId(1);
-        testGame = new HashSet<>(Arrays.asList(game1));
+        testGame = new HashSet<>(Collections.singleton(game1));
         testPlayer.setOwnedGames(testGame);
 
         //Criando o achievement e adicionando ao set
         achievement1 = new Achievement(game1,"mockAchiev","mockedAchiev","mockedurl");
         achievement1.setId(1);
-        Set<Achievement> testAchievements = new HashSet<>(Arrays.asList(achievement1));
+        Set<Achievement> testAchievements = new HashSet<>(Collections.singleton(achievement1));
 
         //when
         testPlayer.setUnlockedAchievements(testAchievements);
@@ -84,13 +82,13 @@ class PlayerTest {
     void setUnlockedAchievements(){
         game1 = new Game();
         game1.setId(1);
-        testGame = new HashSet<>(Arrays.asList(game1));
+        testGame = new HashSet<>(Collections.singleton(game1));
         testPlayer.setOwnedGames(testGame);
 
         //Criando o achievement e adicionando ao set
         achievement1 = new Achievement(game1,"mockAchiev","mockedAchiev","mockedurl");
         achievement1.setId(1);
-        Set<Achievement> testAchievements = new HashSet<>(Arrays.asList(achievement1));
+        Set<Achievement> testAchievements = new HashSet<>(Collections.singleton(achievement1));
 
         //when
         testPlayer.setUnlockedAchievements(testAchievements);

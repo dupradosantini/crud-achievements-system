@@ -11,5 +11,4 @@ public class AchievementSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(AchievementSystemApplication.class, args);
     }
-
 }

@@ -14,6 +14,8 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.*;
 
+
+
 @Table(indexes = @Index(columnList = "email"))
 @Getter
 @Setter

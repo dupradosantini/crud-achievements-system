@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.servlet.tags.form.AbstractCheckedElementTag;
 
 import java.util.Optional;
 
@@ -39,7 +38,7 @@ class AchievementServiceImplTest {
 
         when(achievementRepository.findById(anyInt())).thenReturn(achievementOptional);
 
-        Achievement achievReturned = achievementService.findById(anyInt());
+        achievementService.findById(anyInt());
 
         verify(achievementRepository,times(1)).findById(anyInt());
 

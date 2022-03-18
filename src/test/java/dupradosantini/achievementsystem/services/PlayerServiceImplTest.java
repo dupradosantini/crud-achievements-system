@@ -157,10 +157,9 @@ class PlayerServiceImplTest {
         player.setUnlockedAchievements(achievementSet);
 
 
-        doReturn(achievementSet).when(playerRepository).getAllUnlockedAchievements(anyInt());
-        doReturn(testSet).when(playerRepository).getAllOwnedGames(anyInt());
+        doReturn(achievementSet).when(playerRepository).findAchievementsByGame(anyInt(),anyInt());
 
-        Set<Achievement> returnedSet = playerService.findUnlockedAchievementsByGame(player.getId(),testGame);
+        Set<Achievement> returnedSet = playerService.findUnlockedAchievementsByGame(player.getId(),testGame.getId());
 
         assertEquals(achievementSet,returnedSet,"Sets should be equal");
     }

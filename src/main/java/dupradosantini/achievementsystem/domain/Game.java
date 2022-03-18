@@ -44,6 +44,7 @@ public class Game implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     @JsonManagedReference(value = "game-achievement")
+    //@JsonIgnore
     private Set<Achievement> achievements;
 
     public Game(String name, String cover_image, String genre) {

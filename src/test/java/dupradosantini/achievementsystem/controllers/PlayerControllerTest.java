@@ -3,7 +3,6 @@ package dupradosantini.achievementsystem.controllers;
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
-import dupradosantini.achievementsystem.services.GameServiceImpl;
 import dupradosantini.achievementsystem.services.PlayerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,8 +30,6 @@ class PlayerControllerTest {
 
     @Mock
     PlayerServiceImpl playerService;
-    @Mock
-    GameServiceImpl gameService;
 
     PlayerController playerController;
 
@@ -41,7 +38,7 @@ class PlayerControllerTest {
     @BeforeEach
     public void setUp(){
         MockitoAnnotations.openMocks(this);
-        playerController = new PlayerController(playerService,gameService);
+        playerController = new PlayerController(playerService);
         mockMvc = MockMvcBuilders.standaloneSetup(playerController).build();
     }
 
@@ -77,7 +74,7 @@ class PlayerControllerTest {
     @Test
     public void testGetUnlockedAchievements() throws Exception{
         Set<Achievement> achievementSet = new HashSet<>();
-        when(playerService.findUnlockedAchievementsByGame(anyInt(),any())).thenReturn(achievementSet);
+        when(playerService.findUnlockedAchievementsByGame(anyInt(),anyInt())).thenReturn(achievementSet);
 
         mockMvc.perform(get("/players/1/games/1/achievements"))
                 .andExpect(status().isOk());

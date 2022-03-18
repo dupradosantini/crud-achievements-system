@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+
 @Service
 @Slf4j
 public class PlayerServiceImpl implements PlayerService {
@@ -32,6 +33,7 @@ public class PlayerServiceImpl implements PlayerService {
         this.playerRepository = playerRepository;
         this.achievementService = achievementService;
     }
+
 
     @Override
     public Player findById(Integer id){
@@ -75,7 +77,7 @@ public class PlayerServiceImpl implements PlayerService {
         return thisPlayer.getOwnedGames();
     }
 
-    @Override
+    /*@Override //just legacy code when we werent used direct queries
     public Set<Achievement> findUnlockedAchievementsByGame(Integer playerId, Game searchedGame){
         //Getting the required player
         //Player thisPlayer = findById(playerId); could be used to check if player exists
@@ -111,7 +113,7 @@ public class PlayerServiceImpl implements PlayerService {
             //Possivel exceção customizada.
         }
         return returnSet;
-    }
+    }*/
 
     @Override
     public Player unlockAchievements(Integer playerId, Set<Achievement> achievementSet){
@@ -143,5 +145,10 @@ public class PlayerServiceImpl implements PlayerService {
         }
 
         return playerRepository.save(updatedPlayer);
+    }
+
+    @Override
+    public Set<Achievement> findUnlockedAchievementsByGame(Integer player_id, Integer game_id){
+        return playerRepository.findAchievementsByGame(player_id,game_id);
     }
 }

@@ -21,9 +21,9 @@ public interface PlayerService {
 
     Set<Game> findOwnedGames(Integer id);
 
-    Set<Achievement> findUnlockedAchievementsByGame(Integer playerId, Game searchedGame);
-
     Player unlockAchievements(Integer playerId, Set<Achievement> achievementSet);
 
     Player addGame(Integer playerId, Set<Game> gameSet);
+
+    Set<Achievement> findUnlockedAchievementsByGame(Integer playerId, Integer gameId);
 }
