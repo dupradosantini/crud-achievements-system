@@ -24,7 +24,7 @@ import java.net.URI;
 
 import java.util.Set;
 
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/players")
 public class PlayerController {
