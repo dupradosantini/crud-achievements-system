@@ -5,10 +5,10 @@ VALUES ('player1@email.com', 'player1name', 'urlprofilepic'),
 INSERT INTO player(name, email)
 VALUES ('player3name','player3mail@gmail.com');
 
-INSERT INTO game(name, genre,coverImage)
+INSERT INTO game(name, genre,cover_image)
 VALUES ('Horizon Forbidden West','Adventure',null),
        ('Lost Ark','Action-MMORPG',null),
        ('Enter the Gungeon','Roguelike',null);
 
-INSERT INTO achievement(gameId, name, description)
+INSERT INTO achievement(game_id, name, description)
 VALUES (3,'Gungeon Acolyte','Complete the Tutorial')

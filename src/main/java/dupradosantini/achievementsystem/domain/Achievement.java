@@ -38,7 +38,7 @@ public class Achievement implements Serializable {
     private String description;
 
     @Column(name = "picture")
-    @Length(max=50, message = "O URL para a imagem da conquista deve ter no máximo 50 caracteres")
+    @Length(max=300, message = "O URL para a imagem da conquista deve ter no máximo 50 caracteres")
     private String picture;
 
     @ManyToOne(optional = false)

@@ -2,7 +2,7 @@ CREATE TABLE "player"(
     id INT NOT NULL generated always as identity,
     email VARCHAR(30) NOT NULL,
     name VARCHAR (30) NOT NULL,
-    profile_pic VARCHAR(50),
+    profile_pic VARCHAR(300),
     PRIMARY KEY (id),
     UNIQUE(email)
 );
@@ -10,7 +10,7 @@ CREATE TABLE "player"(
 CREATE TABLE "game"(
     id INT NOT NULL generated always as identity,
     name varchar(30) NOT NULL,
-    cover_image varchar(50),
+    cover_image varchar(300),
     genre varchar (15) NOT NULL,
     PRIMARY KEY  (id)
 );
@@ -19,7 +19,7 @@ CREATE TABLE "achievement"(
     id INT NOT NULL generated always as identity,
     name varchar(30) NOT NULL,
     description varchar(50) NOT NULL,
-    picture varchar(50),
+    picture varchar(300),
     game_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (game_id) references game(id)

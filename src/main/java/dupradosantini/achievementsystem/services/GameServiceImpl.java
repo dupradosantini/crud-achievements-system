@@ -2,6 +2,7 @@ package dupradosantini.achievementsystem.services;
 
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
+import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.repositories.GameRepository;
 import dupradosantini.achievementsystem.services.exceptions.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -60,5 +61,20 @@ public class GameServiceImpl implements GameService{
             thisGame.addAchievement(achievementService.create(actual, thisGame));
         }
         return gameRepository.save(thisGame);
+    }
+
+    @Override
+    public void delete(Integer id){
+        findById(id);
+        gameRepository.deleteById(id);
+    }
+
+    @Override
+    public Game update(Integer id, Game obj){
+        Game newObj = findById(id);
+        newObj.setName(obj.getName());
+        newObj.setGenre(obj.getGenre());
+        newObj.setCover_image(obj.getCover_image());
+        return gameRepository.save(newObj);
     }
 }

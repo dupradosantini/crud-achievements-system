@@ -3,6 +3,7 @@ package dupradosantini.achievementsystem.controllers;
 import dupradosantini.achievementsystem.domain.Achievement;
 import dupradosantini.achievementsystem.domain.Game;
 
+import dupradosantini.achievementsystem.domain.Player;
 import dupradosantini.achievementsystem.services.GameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -95,5 +96,30 @@ public class GameController {
     public ResponseEntity<Game> addAchievement(@PathVariable Integer id, @RequestBody Set<Achievement> achievementSet){
         Game updatedGame = gameService.addAchievements(id,achievementSet);
         return ResponseEntity.ok().body(updatedGame);
+    }
+
+    @Operation(summary = "Updates an existing game", description = "Used to update game fields")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Game updated",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(description = "Updated game", implementation = Player.class))}),
+            @ApiResponse(responseCode = "404", description = "game not found",
+                    content = @Content) })
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Game> update(@PathVariable Integer id,@RequestBody Game obj){
+        Game newGame = gameService.update(id,obj);
+        return ResponseEntity.ok().body(newGame);
+    }
+
+    @Operation(summary = "Deletes an existing game")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Game deleted",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Game not found",
+                    content = @Content) })
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
+        gameService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

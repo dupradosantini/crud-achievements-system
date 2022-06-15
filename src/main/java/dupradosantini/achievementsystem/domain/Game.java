@@ -30,7 +30,7 @@ public class Game implements Serializable {
     private String name;
 
     @Column(name = "cover_image")
-    @Length(max=50, message = "O URL para a imagem publicitária deve ter no máximo 50 caracteres")
+    @Length(max=300, message = "O URL para a imagem publicitária deve ter no máximo 50 caracteres")
     private String cover_image;
 
     @NotEmpty

@@ -17,4 +17,8 @@ public interface GameService {
     Game create(Game obj);
 
     Game addAchievements(Integer id, Set<Achievement> achievementSet);
+
+    void delete(Integer id);
+
+    Game update(Integer id, Game obj);
 }

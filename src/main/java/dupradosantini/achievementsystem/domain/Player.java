@@ -38,7 +38,7 @@ public class Player implements Serializable {
     @Length(max = 30, message = "O email deve ter no máximo 30 caracteres")
     private String email;
 
-    @Length(max=50, message = "O URL para a foto de perfil deve ter no máximo 50 caracteres")
+    @Length(max=300, message = "O URL para a foto de perfil deve ter no máximo 50 caracteres")
     private String profilePic;
 
     //Relationship with Games
