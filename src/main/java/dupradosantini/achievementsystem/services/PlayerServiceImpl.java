@@ -50,9 +50,7 @@ public class PlayerServiceImpl implements PlayerService {
     public Player update(Integer id, Player obj){
         Player newObj = findById(id);
         newObj.setName(obj.getName());
-        newObj.setOwnedGames(obj.getOwnedGames());
         newObj.setEmail(obj.getEmail());
-        newObj.setUnlockedAchievements(obj.getUnlockedAchievements());
         newObj.setProfilePic(obj.getProfilePic());
         return playerRepository.save(newObj);
     }
@@ -76,44 +74,6 @@ public class PlayerServiceImpl implements PlayerService {
         Player thisPlayer = findById(id);
         return thisPlayer.getOwnedGames();
     }
-
-    /*@Override //just legacy code when we werent used direct queries
-    public Set<Achievement> findUnlockedAchievementsByGame(Integer playerId, Game searchedGame){
-        //Getting the required player
-        //Player thisPlayer = findById(playerId); could be used to check if player exists
-
-        //Allocating all the achievements
-        Set<Achievement> allAchievements = playerRepository.getAllUnlockedAchievements(playerId);
-        if(allAchievements == null){
-            allAchievements = new HashSet<>();
-        }
-        //This will be our return set
-        Set<Achievement> returnSet = new HashSet<>();
-
-
-        //Allocating the players owned games.
-        Set<Game> ownedGames = playerRepository.getAllOwnedGames(playerId);
-        if(ownedGames == null){
-            ownedGames = new HashSet<>();
-        }
-
-        if(ownedGames.contains(searchedGame)) {
-            for (Achievement actual : allAchievements) { //enquanto houver achievements no set
-                if (actual.getGameId().equals(searchedGame.getId())) {//se o gameID do achiev for igual ao gameId passado
-                    returnSet.add(actual);       // adiciono ao set
-                }
-            }
-            if (returnSet.isEmpty()){
-                System.out.println("O jogador não possui conquistas nesse jogo");
-                //Possivel exceção customizada.
-            }
-        }else{
-            System.out.println("O jogado não possui o jogo especificado.");
-            throw new RuntimeException("O jogador não possui o jogo especificado.");
-            //Possivel exceção customizada.
-        }
-        return returnSet;
-    }*/
 
     @Override
     public Player unlockAchievements(Integer playerId, Set<Achievement> achievementSet){

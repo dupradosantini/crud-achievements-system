@@ -67,8 +67,8 @@ public class PlayerController {
         return ResponseEntity.ok(returnPage);
     }
 
-    @Operation(summary = "Updates an existing player", description = "Used to update players fields as well " +
-            "as their owned games and unlocked achievements")
+    @Operation(summary = "Updates an existing player", description = "Used to update players fields" +
+            "games or achievements have their own methods.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Player updated",
                 content = {@Content(mediaType = "application/json",
