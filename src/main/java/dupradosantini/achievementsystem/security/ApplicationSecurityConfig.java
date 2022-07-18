@@ -13,6 +13,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests() //to authorize a request
+                .antMatchers("/","/index","/css/*","/js/*")
+                .permitAll() //Permits all patterns above.
                 .anyRequest()   //being it any request
                 .authenticated() // has to be authenticated
                 .and()
