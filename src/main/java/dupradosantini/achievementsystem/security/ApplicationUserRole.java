@@ -11,7 +11,7 @@ import static dupradosantini.achievementsystem.security.ApplicationUserPermissio
 public enum ApplicationUserRole {
     //ROLES ENUM
     PLAYER(Sets.newHashSet()),  //Lets start giving players no permissions
-    ADMIN(Sets.newHashSet(PLAYER_READ,PLAYER_WRITE,GAMES_READ,GAMES_WRITE)),
+    ADMIN(Sets.newHashSet(PLAYER_READ,PLAYER_WRITE,PLAYER_DELETE,GAMES_READ,GAMES_WRITE)),
     ADMINTRAINEE(Sets.newHashSet(PLAYER_READ,GAMES_READ));
 
     //Permissions set of a role

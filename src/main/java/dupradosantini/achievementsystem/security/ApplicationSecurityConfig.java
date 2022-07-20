@@ -3,6 +3,7 @@ package dupradosantini.achievementsystem.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static dupradosantini.achievementsystem.security.ApplicationUserPermission.*;
 import static dupradosantini.achievementsystem.security.ApplicationUserRole.*;
 
 @Configuration
@@ -31,7 +33,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable() //TODO se what this does.
                 .authorizeRequests() //to authorize a request
                 .antMatchers("/","/index","/css/*","/js/*").permitAll()//Permits all patterns stated.
-                .antMatchers("/players/**").hasRole(ADMIN.name())
+                //.antMatchers("/players/**").hasRole(ADMIN.name()) //Disabling this for now
+                .antMatchers(HttpMethod.POST, "/players/**").hasAuthority(PLAYER_WRITE.name())
+                .antMatchers(HttpMethod.PUT, "/players/**").hasAuthority(PLAYER_WRITE.name())
+                .antMatchers(HttpMethod.DELETE, "/players/**").hasAuthority(PLAYER_DELETE.name())
+                .antMatchers(HttpMethod.GET, "/players/**").hasAnyRole(ADMIN.name(),ADMINTRAINEE.name())
                 .anyRequest()   //being it any request
                 .authenticated() // has to be authenticated
                 .and()
