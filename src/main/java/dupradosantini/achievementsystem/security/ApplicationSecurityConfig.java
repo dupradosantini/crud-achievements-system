@@ -12,8 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import static dupradosantini.achievementsystem.security.ApplicationUserRole.ADMIN;
-import static dupradosantini.achievementsystem.security.ApplicationUserRole.PLAYER;
+import static dupradosantini.achievementsystem.security.ApplicationUserRole.*;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +27,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests() //to authorize a request
+        http
+                .csrf().disable() //TODO se what this does.
+                .authorizeRequests() //to authorize a request
                 .antMatchers("/","/index","/css/*","/js/*").permitAll()//Permits all patterns stated.
                 .antMatchers("/players/**").hasRole(ADMIN.name())
                 .anyRequest()   //being it any request
@@ -45,14 +46,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails luisUser = User.builder()
                 .username("luis")
                 .password(passwordEncoder.encode("password"))
-                .roles(PLAYER.name()) //ROLE_DEV (how springSec understands this role)
+                .roles(PLAYER.name()) //ROLE_PLAYER (how springSec understands this role)
                 .build();
         UserDetails adminUser = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("adminpw"))
                 .roles(ADMIN.name())
                 .build();
+        UserDetails adminUser2 = User.builder()
+                .username("admin2")
+                .password(passwordEncoder.encode("adminpw2"))
+                .roles(ADMINTRAINEE.name())
+                .build();
 
-        return new InMemoryUserDetailsManager(luisUser,adminUser);
+        return new InMemoryUserDetailsManager(luisUser,adminUser,adminUser2);
     }
 }
