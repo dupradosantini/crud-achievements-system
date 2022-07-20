@@ -29,8 +29,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests() //to authorize a request
-                .antMatchers("/","/index","/css/*","/js/*")
-                .permitAll() //Permits all patterns above.
+                .antMatchers("/","/index","/css/*","/js/*").permitAll()//Permits all patterns stated.
+                .antMatchers("/players/**").hasRole(ADMIN.name())
                 .anyRequest()   //being it any request
                 .authenticated() // has to be authenticated
                 .and()
