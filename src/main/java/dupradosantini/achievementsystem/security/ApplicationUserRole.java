@@ -2,8 +2,11 @@ package dupradosantini.achievementsystem.security;
 
 import com.google.common.collect.Sets;
 import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static dupradosantini.achievementsystem.security.ApplicationUserPermission.*;
 
@@ -11,7 +14,7 @@ import static dupradosantini.achievementsystem.security.ApplicationUserPermissio
 public enum ApplicationUserRole {
     //ROLES ENUM
     PLAYER(Sets.newHashSet()),  //Lets start giving players no permissions
-    ADMIN(Sets.newHashSet(PLAYER_READ,PLAYER_WRITE,PLAYER_DELETE,GAMES_READ,GAMES_WRITE)),
+    ADMIN(Sets.newHashSet(PLAYER_READ,PLAYER_WRITE,GAMES_READ,GAMES_WRITE)),
     ADMINTRAINEE(Sets.newHashSet(PLAYER_READ,GAMES_READ));
 
     //Permissions set of a role
@@ -19,5 +22,13 @@ public enum ApplicationUserRole {
 
     ApplicationUserRole(Set<ApplicationUserPermission> permissions) {
         this.permissions = permissions;
+    }
+
+    public Set<SimpleGrantedAuthority> getGrantedAuthorities(){
+        Set<SimpleGrantedAuthority> permissions = getPermissions().stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+                .collect(Collectors.toSet());
+        permissions.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
+        return permissions;
     }
 }

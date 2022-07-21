@@ -34,9 +34,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() //to authorize a request
                 .antMatchers("/","/index","/css/*","/js/*").permitAll()//Permits all patterns stated.
                 //.antMatchers("/players/**").hasRole(ADMIN.name()) //Disabling this for now
-                .antMatchers(HttpMethod.POST, "/players/**").hasAuthority(PLAYER_WRITE.name())
-                .antMatchers(HttpMethod.PUT, "/players/**").hasAuthority(PLAYER_WRITE.name())
-                .antMatchers(HttpMethod.DELETE, "/players/**").hasAuthority(PLAYER_DELETE.name())
+                .antMatchers(HttpMethod.POST, "/players/**").hasAuthority(PLAYER_WRITE.getPermission())
+                .antMatchers(HttpMethod.PUT, "/players/**").hasAuthority(PLAYER_WRITE.getPermission())
+                .antMatchers(HttpMethod.DELETE, "/players/**").hasAuthority(PLAYER_WRITE.getPermission())
                 .antMatchers(HttpMethod.GET, "/players/**").hasAnyRole(ADMIN.name(),ADMINTRAINEE.name())
                 .anyRequest()   //being it any request
                 .authenticated() // has to be authenticated
@@ -52,17 +52,20 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails luisUser = User.builder()
                 .username("luis")
                 .password(passwordEncoder.encode("password"))
-                .roles(PLAYER.name()) //ROLE_PLAYER (how springSec understands this role)
+//                .roles(PLAYER.name()) //ROLE_PLAYER (how springSec understands this role)
+                .authorities(PLAYER.getGrantedAuthorities())
                 .build();
         UserDetails adminUser = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("adminpw"))
-                .roles(ADMIN.name())
+//                .roles(ADMIN.name()) //ROLE_ADMIN
+                .authorities(ADMIN.getGrantedAuthorities())
                 .build();
         UserDetails adminUser2 = User.builder()
                 .username("admin2")
                 .password(passwordEncoder.encode("adminpw2"))
-                .roles(ADMINTRAINEE.name())
+//                .roles(ADMINTRAINEE.name()) //ROLE_ADMINTRAINEE
+                .authorities(ADMINTRAINEE.getGrantedAuthorities())
                 .build();
 
         return new InMemoryUserDetailsManager(luisUser,adminUser,adminUser2);

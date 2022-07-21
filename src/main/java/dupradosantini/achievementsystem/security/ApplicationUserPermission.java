@@ -7,7 +7,6 @@ public enum ApplicationUserPermission {
     //PERMISSIONS ENUM
     PLAYER_READ("player:read"),
     PLAYER_WRITE("player:write"),
-    PLAYER_DELETE("player:delete"),
     GAMES_READ("games:read"),
     GAMES_WRITE("games:write");
 
