@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,6 +19,7 @@ import static dupradosantini.achievementsystem.security.ApplicationUserRole.*;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
@@ -34,10 +36,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() //to authorize a request
                 .antMatchers("/","/index","/css/*","/js/*").permitAll()//Permits all patterns stated.
                 //.antMatchers("/players/**").hasRole(ADMIN.name()) //Disabling this for now
-                .antMatchers(HttpMethod.POST, "/players/**").hasAuthority(PLAYER_WRITE.getPermission())
-                .antMatchers(HttpMethod.PUT, "/players/**").hasAuthority(PLAYER_WRITE.getPermission())
-                .antMatchers(HttpMethod.DELETE, "/players/**").hasAuthority(PLAYER_WRITE.getPermission())
-                .antMatchers(HttpMethod.GET, "/players/**").hasAnyRole(ADMIN.name(),ADMINTRAINEE.name())
+//                .antMatchers(HttpMethod.POST, "/players/**").hasAuthority(PLAYER_WRITE.getPermission())
+//                .antMatchers(HttpMethod.PUT, "/players/**").hasAuthority(PLAYER_WRITE.getPermission())
+//                .antMatchers(HttpMethod.DELETE, "/players/**").hasAuthority(PLAYER_WRITE.getPermission())
+//                .antMatchers(HttpMethod.GET, "/players/**").hasAnyRole(ADMIN.name(),ADMINTRAINEE.name())
                 .anyRequest()   //being it any request
                 .authenticated() // has to be authenticated
                 .and()

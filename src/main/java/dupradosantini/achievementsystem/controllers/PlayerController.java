@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -44,6 +45,7 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Player not found",
             content = @Content)})
     @GetMapping(value="/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ADMINTRAINEE')")
     public ResponseEntity<Player> findById( @Parameter(description = "ID of Player to be searched")
                                                 @PathVariable Integer id){
         Player obj = this.playerService.findById(id);
@@ -58,6 +60,7 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Page not found",
             content = @Content) })
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ADMINTRAINEE')")
     public ResponseEntity<Page<Player>> findAll(@Parameter(description = "Page Number")
                                                     @RequestParam(defaultValue = "0") int page,
                                                 @Parameter(description = "Amount of Players per page.")
@@ -76,6 +79,7 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Player not found",
                 content = @Content) })
     @PutMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('player:write')")
     public ResponseEntity<Player> update(@PathVariable Integer id,@RequestBody Player obj){
         Player newPlayer = playerService.update(id,obj);
         return ResponseEntity.ok().body(newPlayer);
@@ -90,6 +94,7 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Player not found",
                 content = @Content) })
     @PostMapping
+    @PreAuthorize("hasAuthority('player:write')")
     public ResponseEntity<Player> create(@RequestBody Player obj){
         Player newPlayer = playerService.create(obj);
         //Boa pratica, repassar o endpoint do novo player criado
@@ -103,6 +108,7 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Player not found",
                 content = @Content) })
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('player:write')")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         playerService.delete(id);
         return ResponseEntity.noContent().build();
@@ -115,6 +121,7 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Player not found",
                 content = @Content) })
     @GetMapping(value = "/{id}/games")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ADMINTRAINEE')")
     public ResponseEntity<Set<Game>> getOwnedGames(@PathVariable Integer id){
         Set<Game> ownedGames = playerService.findOwnedGames(id);
         return ResponseEntity.ok().body(ownedGames);
@@ -128,6 +135,7 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Not found - See Error message",
                 content = @Content) })
     @GetMapping(value = "/{playerId}/games/{gameId}/achievements")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ADMINTRAINEE')")
     public ResponseEntity<Set<Achievement>> getUnlockedAchievements(@PathVariable Integer playerId,
                                                                     @PathVariable Integer gameId){
         Set<Achievement> achievementSet = playerService.findUnlockedAchievementsByGame(playerId,gameId);
@@ -143,6 +151,7 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Not found - could be game, player or achievement",
                     content = @Content) })
     @PutMapping(value = "/{playerId}/achievements/add")
+    @PreAuthorize("hasAuthority('player:write')")
     public ResponseEntity<Player> addAchievements(@PathVariable Integer playerId,
                                                             @RequestBody Set<Achievement> achievementSet){
         Player updatedPlayer = playerService.unlockAchievements(playerId, achievementSet);
@@ -159,6 +168,7 @@ public class PlayerController {
             @ApiResponse(responseCode = "404",description = "Not found - could be the game or the player - See the body of response for details",
                 content = @Content) })
     @PutMapping(value = "/{playerId}/games/add")
+    @PreAuthorize("hasAuthority('player:write')")
     public ResponseEntity<Player> addGame(@PathVariable Integer playerId,
                                           @RequestBody Set<Game> gameSet){
         Player updatedPlayer = playerService.addGame(playerId,gameSet);
