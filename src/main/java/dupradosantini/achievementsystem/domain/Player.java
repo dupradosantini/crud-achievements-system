@@ -41,6 +41,9 @@ public class Player implements Serializable {
     @Length(max=300, message = "O URL para a foto de perfil deve ter no máximo 50 caracteres")
     private String profilePic;
 
+    @Length(max=50, message = "Senhas de até 50 caracteres")
+    private String password;
+
     //Relationship with Games
     @ManyToMany
     @JoinTable(name="ownership",

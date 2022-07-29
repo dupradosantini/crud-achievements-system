@@ -10,5 +10,11 @@
     <!-- MIGRATIONS -->
     <include file="db/changelog/setup.sql"/>
     <!--include file="db/changelog/insert.sql"/-->
-
+    <changeSet id="1" author="Luis">
+        <addColumn tableName="player">
+            <column name="password" type="varchar(50)" defaultValue="password">
+                <constraints nullable="false"></constraints>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
