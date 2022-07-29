@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import dupradosantini.achievementsystem.security.ApplicationUserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -62,6 +63,9 @@ public class Player implements Serializable {
     @JsonManagedReference(value = "player-achievement")
     @JsonIgnore
     private Set<Achievement> unlockedAchievements;
+
+
+    // TODO -> private ApplicationUserRole role;
 
 
 
