@@ -1,5 +1,6 @@
 package dupradosantini.achievementsystem.security;
 
+import dupradosantini.achievementsystem.security.jwt.JwtTokenVerifier;
 import dupradosantini.achievementsystem.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +37,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
+                .addFilterAfter(new JwtTokenVerifier(), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests() //to authorize a request
                 .antMatchers("/","/index","/css/*","/js/*").permitAll()//Permits all patterns stated.
                 .antMatchers("/players/**").hasRole(ADMIN.name()) //Disabling this for now
