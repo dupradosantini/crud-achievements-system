@@ -43,7 +43,7 @@ public class Player implements Serializable {
     private String profilePic;
 
     @JsonIgnore
-    @Length(max=50, message = "Senhas de até 50 caracteres")
+    @Length(max=200, message = "Senhas de até 200 caracteres")
     private String password;
 
     //Relationship with Games

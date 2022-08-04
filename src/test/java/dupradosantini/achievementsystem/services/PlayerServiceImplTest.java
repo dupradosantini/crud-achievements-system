@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 import java.util.*;
@@ -38,6 +39,9 @@ class PlayerServiceImplTest {
     @Mock
     AchievementServiceImpl achievementService;
 
+    @Mock
+    PasswordEncoder passwordEncoder;
+
 
 
     @BeforeEach
@@ -45,7 +49,7 @@ class PlayerServiceImplTest {
         MockitoAnnotations.openMocks(playerService);
         MockitoAnnotations.openMocks(playerRepository);
         MockitoAnnotations.openMocks(achievementService);
-        playerService = new PlayerServiceImpl(playerRepository,achievementService);
+        playerService = new PlayerServiceImpl(playerRepository,achievementService, passwordEncoder);
     }
 
     @Test

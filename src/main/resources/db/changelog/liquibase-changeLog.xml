@@ -18,11 +18,11 @@
         </addColumn>
     </changeSet>
 
-    <!--changeSet id="2" author="Luis">
-        <addColumn tableName="player">
-            <column name="role" type="varchar(20)" defaultValue="ROLE_PLAYER">
-                <constraints nullable="false"></constraints>
-            </column>
-        </addColumn>
-    </changeSet-->
+    <changeSet author="Luis" id="2">
+        <modifyDataType
+                columnName="password"
+                newDataType="varchar(2000)"
+                tableName="player"/>
+    </changeSet>
+
 </databaseChangeLog>

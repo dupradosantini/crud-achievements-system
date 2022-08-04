@@ -5,6 +5,7 @@ import dupradosantini.achievementsystem.domain.Game;
 import dupradosantini.achievementsystem.domain.Player;
 
 import dupradosantini.achievementsystem.repositories.PlayerRepository;
+import dupradosantini.achievementsystem.security.SecurityUser;
 import dupradosantini.achievementsystem.services.exceptions.ObjectNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,19 +24,22 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class PlayerServiceImpl implements PlayerService {
+public class PlayerServiceImpl implements PlayerService, UserDetailsService {
 
 
     private final PlayerRepository playerRepository;
 
     private final AchievementServiceImpl achievementService;
 
+    private final PasswordEncoder passwordEncoder;
+
 
 
     @Autowired
-    public PlayerServiceImpl(PlayerRepository playerRepository, AchievementServiceImpl achievementService) {
+    public PlayerServiceImpl(PlayerRepository playerRepository, AchievementServiceImpl achievementService, PasswordEncoder passwordEncoder) {
         this.playerRepository = playerRepository;
         this.achievementService = achievementService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -60,6 +68,7 @@ public class PlayerServiceImpl implements PlayerService {
         obj.setId(null);//Protegendo caso o requerimento contenha um ID, será gerado posteriormente.
         obj.setUnlockedAchievements(null);
         obj.setOwnedGames(null);
+        obj.setPassword(passwordEncoder.encode(obj.getPassword()));
         return playerRepository.save(obj);
     }
 
@@ -111,4 +120,14 @@ public class PlayerServiceImpl implements PlayerService {
     public Set<Achievement> findUnlockedAchievementsByGame(Integer player_id, Integer game_id){
         return playerRepository.findAchievementsByGame(player_id,game_id);
     }
+
+    //This finds the player by email, which is our username, and maps it to the SecurityUser entity,
+    //which is our User from the security framework perspective.
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Player> player = playerRepository.findPlayerByEmail(username);
+        Player p = player.orElseThrow(() -> new UsernameNotFoundException("Username not found!"));
+        return new SecurityUser(p);
+    }
+
 }
