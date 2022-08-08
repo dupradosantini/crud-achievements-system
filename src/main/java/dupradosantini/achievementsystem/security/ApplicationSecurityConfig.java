@@ -39,6 +39,22 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/"
+            // other public endpoints of your API may be appended to this array
+    };
+
     @Autowired
     public ApplicationSecurityConfig(PlayerServiceImpl userDetailsService, SecretKey secretKey, JwtConfig jwtConfig) {
         this.userDetailsService = userDetailsService;
@@ -62,7 +78,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests() //to authorize a request
-                .antMatchers("/","/index","/css/*","/js/*").permitAll()//Permits all patterns stated.
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/players/**").hasRole(ADMIN.name())
                 .anyRequest()   //being it any request
                 .authenticated(); // has to be authenticated
