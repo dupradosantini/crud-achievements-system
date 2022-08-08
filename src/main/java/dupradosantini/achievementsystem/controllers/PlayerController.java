@@ -85,7 +85,7 @@ public class PlayerController {
         return ResponseEntity.ok().body(newPlayer);
     }
 
-    @Operation(summary = "Creates an existing player", description = "When a player is created, its owned games " +
+    @Operation(summary = "Creates a player", description = "When a player is created, its owned games " +
             "and unlocked achievements are non-existent (clean new player), requiring to be added later via PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Player created",
@@ -94,7 +94,6 @@ public class PlayerController {
             @ApiResponse(responseCode = "404", description = "Player not found",
                 content = @Content) })
     @PostMapping
-    @PreAuthorize("hasAuthority('player:write')")
     public ResponseEntity<Player> create(@RequestBody Player obj){
         Player newPlayer = playerService.create(obj);
         //Boa pratica, repassar o endpoint do novo player criado

@@ -79,7 +79,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests() //to authorize a request
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/players/**").hasRole(ADMIN.name())
+                .antMatchers(HttpMethod.POST,"/players").permitAll()
+                //.antMatchers("/players/**").hasRole(ADMIN.name())
                 .anyRequest()   //being it any request
                 .authenticated(); // has to be authenticated
 

@@ -68,6 +68,7 @@ public class PlayerServiceImpl implements PlayerService, UserDetailsService {
         obj.setId(null);//Protegendo caso o requerimento contenha um ID, será gerado posteriormente.
         obj.setUnlockedAchievements(null);
         obj.setOwnedGames(null);
+        System.out.println(obj.getPassword());
         obj.setPassword(passwordEncoder.encode(obj.getPassword()));
         return playerRepository.save(obj);
     }

@@ -1,9 +1,6 @@
 package dupradosantini.achievementsystem.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import dupradosantini.achievementsystem.security.ApplicationUserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +19,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties(allowSetters = true, value = {"password"})
 public class Player implements Serializable {
 
     private static final long serialVersionUID = 1L; //serialization ID
@@ -42,7 +40,6 @@ public class Player implements Serializable {
     @Length(max=300, message = "O URL para a foto de perfil deve ter no máximo 50 caracteres")
     private String profilePic;
 
-    @JsonIgnore
     @Length(max=200, message = "Senhas de até 200 caracteres")
     private String password;
 
@@ -148,4 +145,5 @@ public class Player implements Serializable {
             ownedGames.add(toBeAddedGame);
         }
     }
+
 }
