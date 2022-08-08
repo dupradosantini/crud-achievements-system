@@ -1,17 +1,17 @@
 package dupradosantini.achievementsystem.controllers;
 
+import com.google.common.net.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
-@Controller
+@RestController
 @RequestMapping(value = "/")
 public class LoginController {
     @PostMapping("login")
-    public String getLogin(){
-        return "login";
+    public ResponseEntity<String> getLogin(){
+        System.out.println("Login attempt");
+        return ResponseEntity.ok().body("");
     }
 }
